@@ -1,0 +1,2 @@
+key: atlassian/aws-elasticbeanstalk-deploy
+image: bitbucketpipelines/aws-elasticbeanstalk-deploy:0.1.0

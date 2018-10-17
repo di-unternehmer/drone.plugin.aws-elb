@@ -1,0 +1,83 @@
+image:
+  name: atlassian/default-image:2
+
+test: &test
+  step:
+    name: Test
+    script:
+      - export DOCKERHUB_IMAGE='bitbucketpipelines/aws-elasticbeanstalk-deploy'
+      - export DOCKERHUB_TAG=${BITBUCKET_BUILD_NUMBER}
+      - apt-get update && apt-get install zip bats -y
+      - echo "Building image..."
+      - docker build -t ${DOCKERHUB_IMAGE}:${BITBUCKET_BUILD_NUMBER} -t ${DOCKERHUB_IMAGE}:latest .
+      - echo "Testing image..."
+      - bats test/test.bats
+    services:
+      - docker
+
+git_tag: &git_tag
+    step:
+        name: Git Tag
+        script:
+        - ./ci-scripts/git-setup.sh
+        - ./ci-scripts/git-tag.sh
+
+git_merge: &git_merge
+    step:
+        name: Git Merge
+        script:
+        - ./ci-scripts/git-setup.sh
+        - ./ci-scripts/git-merge.sh
+
+docker_release: &docker_release
+    step:
+        name: Build, Tag and Push Docker Image
+        services:
+        - docker
+        script:
+        # Release to docker
+        - ./ci-scripts/docker-release.sh bitbucketpipelines/aws-elasticbeanstalk-deploy
+
+pipelines:
+    default:
+    - <<: *test
+
+    branches:
+        master:
+        - <<: *test
+        - <<: *git_tag
+        - <<: *docker_release
+        - <<: *git_merge
+
+        release-*:
+        - <<: *test
+        - <<: *git_tag
+        - <<: *docker_release
+        - <<: *git_merge
+
+        qa-*:
+        - <<: *test
+        - <<: *git_tag
+        - <<: *docker_release
+    custom:
+      test-and-report:
+        - step:
+            script:
+              - export DOCKERHUB_IMAGE='bitbucketpipelines/aws-elasticbeanstalk-deploy'
+              - export DOCKERHUB_TAG=${BITBUCKET_BUILD_NUMBER}
+              - apt-get update && apt-get install zip bats -y
+              - echo "Building image..."
+              - docker build -t ${DOCKERHUB_IMAGE}:${BITBUCKET_BUILD_NUMBER} -t ${DOCKERHUB_IMAGE}:latest .
+              - echo "Testing image..."
+              - set +e
+              - bats test/test.bats; test_exit_code=$?
+              - set -e
+              - echo test_exit_code = $test_exit_code
+              - task: atlassian/report-task-test-result:1.0.0
+                environment:
+                  DATADOG_API_KEY: $DATADOG_API_KEY
+                  TASK_NAME: aws-elasticbeanstalk-deploy
+                  TEST_EXIT_CODE: $test_exit_code
+              - exit $test_exit_code
+            services:
+              - docker
