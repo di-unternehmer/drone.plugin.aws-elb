@@ -7,7 +7,7 @@ Deploy your code using [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbea
 Add the following snippet to the script section of your `bitbucket-pipelines.yml` file:
     
 ```yaml
-- task: atlassian/aws-elasticbeanstalk-deploy:0.1.0
+- task: atlassian/aws-elasticbeanstalk-deploy:0.1.1
   environment:
     AWS_ACCESS_KEY_ID: <string>
     AWS_SECRET_ACCESS_KEY: <string>
@@ -96,7 +96,7 @@ Upload the artifact `application.zip` and deploy your environment.
     
 ```yaml
 script:
-  - task: atlassian/aws-elasticbeanstalk-deploy:0.1.0
+  - task: atlassian/aws-elasticbeanstalk-deploy:0.1.1
     environment:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
@@ -111,7 +111,7 @@ script:
 Upload the artifact `application.zip` and create a version `deploy-$BITBUCKET_BUILD_NUMBER-multiple` in Elastic Beanstalk.
 
 ```yaml
-- task: atlassian/aws-elasticbeanstalk-deploy:0.1.0
+- task: atlassian/aws-elasticbeanstalk-deploy:0.1.1
   environment:
     AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
@@ -126,7 +126,7 @@ Upload the artifact `application.zip` and create a version `deploy-$BITBUCKET_BU
 Deploy your version `deploy-$BITBUCKET_BUILD_NUMBER-multiple` into the environment `production` and wait until the deployment is completed to see the status.
 
 ```yaml
-- task: atlassian/aws-elasticbeanstalk-deploy:0.1.0
+- task: atlassian/aws-elasticbeanstalk-deploy:0.1.1
   environment:
     AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
