@@ -1,4 +1,4 @@
-# Bitbucket Pipelines Task: AWS Elastic Beanstalk
+# Bitbucket Pipelines Pipe: AWS Elastic Beanstalk
 
 Deploy your code using [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/). 
 
