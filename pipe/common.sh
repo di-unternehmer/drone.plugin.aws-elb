@@ -23,9 +23,11 @@ fail() { echo -e "${red}✖ $*${reset}"; exit 1; }
 
 ## Enable debug mode.
 enable_debug() {
+  aws_debug_args=""
   if [[ "${DEBUG}" == "true" ]]; then
     info "Enabling debug mode."
     set -x
+    aws_debug_args="--debug"
   fi
 }
 

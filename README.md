@@ -18,6 +18,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
     # S3_BUCKET: "<string>" # Optional
     # VERSION_LABEL: "<string>" # Optional
     # WAIT: "<boolean>" # Optional, default 'false'.
+    # DEBUG: "<boolean>" # Optional, default 'false'.
 ```
 
 ## Parameters
@@ -37,7 +38,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 | WAIT                            |  Wait for deployment to complete. Boolean value, default: `false`. |
 | DEBUG                           |  Turn on extra debug information. |
 | COMMAND                         |  Command to be executed during the deployment. Valid options are `all`, `update-only`, `deploy-only`. Default: `all`. |
-
+| DEBUG                           |  Turn on extra debug information.  |
 _(*) = required parameter._
 
 
@@ -152,4 +153,4 @@ If you’re reporting an issue, please include:
 Copyright (c) 2018 Atlassian and others.
 Apache 2.0 licensed, see [LICENSE.txt](LICENSE.txt) file.
 
-[community]: https://community.atlassian.com/t5/forums/postpage/choose-node/true/interaction-style/qanda?add-tags=bitbucket-pipelines,pipes,aws,lambda
+[community]: https://community.atlassian.com/t5/forums/postpage/choose-node/true/interaction-style/qanda?add-tags=bitbucket-pipelines,pipes,aws
