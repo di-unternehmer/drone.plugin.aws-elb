@@ -1,0 +1,6 @@
+[
+    {
+        "type": "minor",
+        "description": "Use quotes for all pipes examples in README.md."
+    }
+]

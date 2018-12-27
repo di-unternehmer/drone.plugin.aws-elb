@@ -1,0 +1,6 @@
+[
+    {
+        "type": "minor",
+        "description": "Initial release of Bitbucket Pipelines AWS Elastic Beanstalk deployment pipe."
+    }
+]

@@ -19,18 +19,18 @@
 source "$(dirname "$0")/common.sh"
 
 # mandatory variables
-AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:?'You need to configure the AWS_ACCESS_KEY_ID environment variable!'}
-AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:?'You need to configure the AWS_SECRET_ACCESS_KEY environment variable!'}
-AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:?'You need to configure the AWS_DEFAULT_REGION environment variable!'}
-APPLICATION_NAME=${APPLICATION_NAME:?'You need to configure the APPLICATION_NAME environment variable!'}
+AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:?'You need to configure the AWS_ACCESS_KEY_ID variable!'}
+AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:?'You need to configure the AWS_SECRET_ACCESS_KEY variable!'}
+AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:?'You need to configure the AWS_DEFAULT_REGION variable!'}
+APPLICATION_NAME=${APPLICATION_NAME:?'You need to configure the APPLICATION_NAME variable!'}
 
 COMMAND=${COMMAND:="all"}
 
 if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
-    ZIP_FILE=${ZIP_FILE:?'You need to configure the ZIP_FILE environment variable!'}
+    ZIP_FILE=${ZIP_FILE:?'You need to configure the ZIP_FILE variable!'}
 fi
 if [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
-    ENVIRONMENT_NAME=${ENVIRONMENT_NAME:?'You need to configure the ENVIRONMENT_NAME environment variable!'}
+    ENVIRONMENT_NAME=${ENVIRONMENT_NAME:?'You need to configure the ENVIRONMENT_NAME variable!'}
 fi
 
 # default variables

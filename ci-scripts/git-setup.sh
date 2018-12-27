@@ -14,5 +14,5 @@ chmod 600 ~/.ssh/id_rsa
 
 # Configure git
 git config user.name "Pipelines Tasks"
-git config user.email bitbucketci-team@atlassian.com
+git config user.email commits-noreply@bitbucket.org
 git remote set-url origin git@bitbucket.org:${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}.git
