@@ -21,7 +21,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
     # DEBUG: "<boolean>" # Optional, default 'false'.
 ```
 
-## Parameters
+## Variables
 
 ### Basic usage
 
@@ -39,7 +39,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 | DEBUG                           |  Turn on extra debug information. |
 | COMMAND                         |  Command to be executed during the deployment. Valid options are `all`, `update-only`, `deploy-only`. Default: `all`. |
 | DEBUG                           |  Turn on extra debug information.  |
-_(*) = required parameter._
+_(*) = required variable._
 
 
 ### Advanced usage
