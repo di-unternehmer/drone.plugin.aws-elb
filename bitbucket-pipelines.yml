@@ -5,7 +5,7 @@ test: &test
   step:
     name: Test
     script:
-      - export DOCKERHUB_IMAGE='bitbucketpipelines/aws-elasticbeanstalk-deploy'
+      - export DOCKERHUB_IMAGE="bitbucketpipelines/${BITBUCKET_REPO_SLUG}"
       - export DOCKERHUB_TAG=${BITBUCKET_BUILD_NUMBER}
       - apt-get update && apt-get install zip bats -y
       - echo "Building image..."
@@ -15,55 +15,35 @@ test: &test
     services:
       - docker
 
-git_tag: &git_tag
+push: &push
     step:
-        name: Git Tag
+        name: Push and Tag
+        image: python:3.6.7
         script:
+        - pip install semversioner
         - ./ci-scripts/git-setup.sh
+        - ./ci-scripts/bump-version.sh
+        - ./ci-scripts/docker-release.sh bitbucketpipelines/$BITBUCKET_REPO_SLUG
+        - ./ci-scripts/git-commit.sh
         - ./ci-scripts/git-tag.sh
-
-git_merge: &git_merge
-    step:
-        name: Git Merge
-        script:
-        - ./ci-scripts/git-setup.sh
-        - ./ci-scripts/git-merge.sh
-
-docker_release: &docker_release
-    step:
-        name: Build, Tag and Push Docker Image
         services:
         - docker
-        script:
-        # Release to docker
-        - ./ci-scripts/docker-release.sh bitbucketpipelines/aws-elasticbeanstalk-deploy
 
 pipelines:
     default:
     - <<: *test
-
     branches:
         master:
         - <<: *test
-        - <<: *git_tag
-        - <<: *docker_release
-        - <<: *git_merge
-
-        release-*:
-        - <<: *test
-        - <<: *git_tag
-        - <<: *docker_release
-        - <<: *git_merge
-
+        - <<: *push
         qa-*:
         - <<: *test
-        - <<: *git_tag
-        - <<: *docker_release
+        - <<: *push
     custom:
       test-and-report:
         - step:
             script:
-              - export DOCKERHUB_IMAGE='bitbucketpipelines/aws-elasticbeanstalk-deploy'
+              - export DOCKERHUB_IMAGE="bitbucketpipelines/${BITBUCKET_REPO_SLUG}"
               - export DOCKERHUB_TAG=${BITBUCKET_BUILD_NUMBER}
               - apt-get update && apt-get install zip bats -y
               - echo "Building image..."
@@ -73,8 +53,8 @@ pipelines:
               - bats test/test.bats; test_exit_code=$?
               - set -e
               - echo test_exit_code = $test_exit_code
-              - task: atlassian/report-task-test-result:1.0.0
-                environment:
+              - pipe: atlassian/report-task-test-result:1.0.0
+                parameters:
                   DATADOG_API_KEY: $DATADOG_API_KEY
                   TASK_NAME: aws-elasticbeanstalk-deploy
                   TEST_EXIT_CODE: $test_exit_code

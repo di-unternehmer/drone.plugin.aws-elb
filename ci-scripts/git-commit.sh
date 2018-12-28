@@ -1,6 +1,6 @@
 #!/bin/bash
-#
-# Tag the current branch with the next
+
+# Commit back to the repository
 # version number, push the tag back to the remote.
 
 set -e
@@ -11,5 +11,6 @@ if [[ "${BITBUCKET_BRANCH}" =~ "qa-" ]]; then
     tag="${tag}-qa-${BITBUCKET_BUILD_NUMBER}"
 fi
 
-git tag -a -m "Tagging for release ${tag}" "${tag}"
-git push origin ${tag}
+git add .
+git commit -m "Update files for new version '${tag}' [skip ci]"
+GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa -F /dev/null" git push origin ${BITBUCKET_BRANCH}

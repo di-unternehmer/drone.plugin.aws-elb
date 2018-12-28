@@ -17,7 +17,7 @@
 set -ex
 
 REPOSITORY=$1
-VERSION=$(cat next.version)
+VERSION=$(semversioner current-version)
 
 # Login to dockerhub.
 docker_login() {

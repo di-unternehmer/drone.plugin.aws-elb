@@ -1,4 +1,4 @@
-# Bitbucket Pipelines Task: AWS Elastic Beanstalk
+# Bitbucket Pipelines Pipe: AWS Elastic Beanstalk
 
 Deploy your code using [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/). 
 
@@ -7,8 +7,8 @@ Deploy your code using [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbea
 Add the following snippet to the script section of your `bitbucket-pipelines.yml` file:
     
 ```yaml
-- task: atlassian/aws-elasticbeanstalk-deploy:0.1.2
-  environment:
+- pipe: atlassian/aws-elasticbeanstalk-deploy:0.1.2
+  parameters:
     AWS_ACCESS_KEY_ID: "<string>"
     AWS_SECRET_ACCESS_KEY: "<string>"
     AWS_DEFAULT_REGION: "<string>"
@@ -18,6 +18,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
     # S3_BUCKET: "<string>" # Optional
     # VERSION_LABEL: "<string>" # Optional
     # WAIT: "<boolean>" # Optional, default 'false'.
+    # DEBUG: "<boolean>" # Optional, default 'false'.
 ```
 
 ## Parameters
@@ -37,7 +38,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 | WAIT                            |  Wait for deployment to complete. Boolean value, default: `false`. |
 | DEBUG                           |  Turn on extra debug information. |
 | COMMAND                         |  Command to be executed during the deployment. Valid options are `all`, `update-only`, `deploy-only`. Default: `all`. |
-
+| DEBUG                           |  Turn on extra debug information.  |
 _(*) = required parameter._
 
 
@@ -73,11 +74,11 @@ If `COMMAND` is set to `deploy-only`
 
 ## Details
 
-This task deploys a new version of an application to an Elastic Beanstalk environment associated with the application.
+This pipe deploys a new version of an application to an Elastic Beanstalk environment associated with the application.
 
 With Elastic Beanstalk, you can quickly deploy and manage applications in the AWS Cloud without worrying about the infrastructure that runs those applications. Elastic Beanstalk reduces management complexity without restricting choice or control. You simply upload your application, and Elastic Beanstalk automatically handles the details of capacity provisioning, load balancing, scaling, and application health monitoring.
 
-For advanced use cases and best practices, we recommend _build once and deploy many_ approach. So, if you have multiple environments we recommend using the parameter `COMMAND` to separate your CI/CD workflow into different operations / tasks:
+For advanced use cases and best practices, we recommend _build once and deploy many_ approach. So, if you have multiple environments we recommend using the parameter `COMMAND` to separate your CI/CD workflow into different operations / pipes:
 
 - `COMMAND: "upload-only"`: It will upload the artifact and release a version in Elastic Beanstalk.
 - `COMMAND: "deploy-only"`: It will deploy the specified version to the desired environment(s). 
@@ -96,8 +97,8 @@ Upload the artifact `application.zip` and deploy your environment.
     
 ```yaml
 script:
-  - task: atlassian/aws-elasticbeanstalk-deploy:0.1.2
-    environment:
+  - pipe: atlassian/aws-elasticbeanstalk-deploy:0.1.2
+    variables:
       AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
       AWS_DEFAULT_REGION: "us-east-1"
@@ -111,8 +112,8 @@ script:
 Upload the artifact `application.zip` and create a version `deploy-$BITBUCKET_BUILD_NUMBER-multiple` in Elastic Beanstalk.
 
 ```yaml
-- task: atlassian/aws-elasticbeanstalk-deploy:0.1.2
-  environment:
+- pipe: atlassian/aws-elasticbeanstalk-deploy:0.1.2
+  variables:
     AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
     AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
@@ -126,8 +127,8 @@ Upload the artifact `application.zip` and create a version `deploy-$BITBUCKET_BU
 Deploy your version `deploy-$BITBUCKET_BUILD_NUMBER-multiple` into the environment `production` and wait until the deployment is completed to see the status.
 
 ```yaml
-- task: atlassian/aws-elasticbeanstalk-deploy:0.1.2
-  environment:
+- pipe: atlassian/aws-elasticbeanstalk-deploy:0.1.2
+  variables:
     AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
     AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
@@ -138,17 +139,18 @@ Deploy your version `deploy-$BITBUCKET_BUILD_NUMBER-multiple` into the environme
     WAIT: "true"
 ```
 
-## Bugs
-Issues, bugs and feature requests can be reported via the [Bitbucket Cloud public issue tracker][sitemaster].
+## Support
+If you’d like help with this pipe, or you have an issue or feature request, [let us know on community][community].
 
-When reporting bugs or issues, please provide:
+If you’re reporting an issue, please include:
 
-* The version of the task
-* Relevant logs and error messages
-* Steps to reproduce
+* the version of the pipe
+* relevant logs and error messages
+* steps to reproduce
+
 
 ## License
 Copyright (c) 2018 Atlassian and others.
 Apache 2.0 licensed, see [LICENSE.txt](LICENSE.txt) file.
 
-[sitemaster]: https://bitbucket.org/site/master
+[community]: https://community.atlassian.com/t5/forums/postpage/choose-node/true/interaction-style/qanda?add-tags=bitbucket-pipelines,pipes,aws
