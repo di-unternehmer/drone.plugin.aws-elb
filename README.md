@@ -25,7 +25,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 
 ### Basic usage
 
-| Environment                     | Usage                                                |
+| Variable                     | Usage                                                |
 | ------------------------------- | ---------------------------------------------------- |
 | AWS_ACCESS_KEY_ID (*)           |  AWS access key. |
 | AWS_SECRET_ACCESS_KEY (*)       |  AWS secret key. |
@@ -46,7 +46,7 @@ _(*) = required variable._
 
 If `COMMAND` is set to `upload-only`
 
-| Environment                     | Usage                                                |
+| Variable                     | Usage                                                |
 | ------------------------------- | ---------------------------------------------------- |
 | AWS_ACCESS_KEY_ID (*)           |  AWS access key. |
 | AWS_SECRET_ACCESS_KEY (*)       |  AWS secret key. |
@@ -60,7 +60,7 @@ If `COMMAND` is set to `upload-only`
 
 If `COMMAND` is set to `deploy-only`
 
-| Environment                     | Usage                                                |
+| Variable                     | Usage                                                |
 | ------------------------------- | ---------------------------------------------------- |
 | AWS_ACCESS_KEY_ID (*)           |  AWS access key. |
 | AWS_SECRET_ACCESS_KEY (*)       |  AWS secret key. |
