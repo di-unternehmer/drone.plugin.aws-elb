@@ -21,11 +21,11 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
     # DEBUG: "<boolean>" # Optional, default 'false'.
 ```
 
-## Parameters
+## Variables
 
 ### Basic usage
 
-| Environment                     | Usage                                                |
+| Variable                     | Usage                                                |
 | ------------------------------- | ---------------------------------------------------- |
 | AWS_ACCESS_KEY_ID (*)           |  AWS access key. |
 | AWS_SECRET_ACCESS_KEY (*)       |  AWS secret key. |
@@ -39,14 +39,14 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 | DEBUG                           |  Turn on extra debug information. |
 | COMMAND                         |  Command to be executed during the deployment. Valid options are `all`, `update-only`, `deploy-only`. Default: `all`. |
 | DEBUG                           |  Turn on extra debug information.  |
-_(*) = required parameter._
+_(*) = required variable._
 
 
 ### Advanced usage
 
 If `COMMAND` is set to `upload-only`
 
-| Environment                     | Usage                                                |
+| Variable                     | Usage                                                |
 | ------------------------------- | ---------------------------------------------------- |
 | AWS_ACCESS_KEY_ID (*)           |  AWS access key. |
 | AWS_SECRET_ACCESS_KEY (*)       |  AWS secret key. |
@@ -60,7 +60,7 @@ If `COMMAND` is set to `upload-only`
 
 If `COMMAND` is set to `deploy-only`
 
-| Environment                     | Usage                                                |
+| Variable                     | Usage                                                |
 | ------------------------------- | ---------------------------------------------------- |
 | AWS_ACCESS_KEY_ID (*)           |  AWS access key. |
 | AWS_SECRET_ACCESS_KEY (*)       |  AWS secret key. |
