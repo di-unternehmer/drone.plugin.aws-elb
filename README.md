@@ -15,10 +15,10 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
     APPLICATION_NAME: "<string>"
     ENVIRONMENT_NAME: "<string>"
     ZIP_FILE: "<string>"
-    # S3_BUCKET: "<string>" # Optional
-    # VERSION_LABEL: "<string>" # Optional
-    # WAIT: "<boolean>" # Optional, default 'false'.
-    # DEBUG: "<boolean>" # Optional, default 'false'.
+    # S3_BUCKET: "<string>" # Optional.
+    # VERSION_LABEL: "<string>" # Optional.
+    # WAIT: "<boolean>" # Optional.
+    # DEBUG: "<boolean>" # Optional.
 ```
 
 ## Variables
@@ -35,10 +35,10 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 | ZIP_FILE (*)                    |  The zip file to deploy. |
 | S3_BUCKET                       |  Bucket name used by Elastic Beanstalk to store artifacts. Default: `${APPLICATION_NAME}-${ENVIRONMENT_NAME}-deployment}`. |
 | VERSION_LABEL                   |  Version label for the new application revision. Default: `${ENVIRONMENT_NAME}_${BITBUCKET_COMMIT:0:8}_YYYY-mm-dd_HHMMSS)`. |
-| WAIT                            |  Wait for deployment to complete. Boolean value, default: `false`. |
+| WAIT                            |  Wait for deployment to complete. Default: `false`. |
 | DEBUG                           |  Turn on extra debug information. |
 | COMMAND                         |  Command to be executed during the deployment. Valid options are `all`, `update-only`, `deploy-only`. Default: `all`. |
-| DEBUG                           |  Turn on extra debug information.  |
+| DEBUG                           |  Turn on extra debug information. Default: `false`. |
 _(*) = required variable._
 
 
@@ -56,7 +56,7 @@ If `COMMAND` is set to `upload-only`
 | ZIP_FILE (*)                    |  The zip file to deploy. |
 | S3_BUCKET                       |  Bucket name used by Elastic Beanstalk to store artifacts. Default: `${APPLICATION_NAME}-${ENVIRONMENT_NAME}-deployment}`. |
 | VERSION_LABEL                   |  Version label for the new application revision. Default: `${ENVIRONMENT_NAME}_${BITBUCKET_COMMIT:0:8}_YYYY-mm-dd_HHMMSS)`. |
-| DEBUG                           |  Turn on extra debug information. |
+| DEBUG                           |  Turn on extra debug information. Default: `false`. |
 
 If `COMMAND` is set to `deploy-only`
 
@@ -69,8 +69,8 @@ If `COMMAND` is set to `deploy-only`
 | COMMAND (*)                     |  Command to be used. Use `deploy-only` here. |
 | ENVIRONMENT_NAME (*)            |  Environment name. |
 | VERSION_LABEL                   |  Version label for the new application revision. Default: `${ENVIRONMENT_NAME}_${BITBUCKET_COMMIT:0:8}_YYYY-mm-dd_HHMMSS)`. |
-| WAIT                            |  Wait for deployment to complete. Boolean value, default: `false`. |
-| DEBUG                           |  Turn on extra debug information. |
+| WAIT                            |  Wait for deployment to complete. Default: `false`. |
+| DEBUG                           |  Turn on extra debug information. Default: `false`. |
 
 ## Details
 
