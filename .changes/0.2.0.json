@@ -1,0 +1,10 @@
+[
+  {
+    "description": "Add support for the DEBUG flag.",
+    "type": "minor"
+  },
+  {
+    "description": "Switch naming convention from tasks to pipes.",
+    "type": "minor"
+  }
+]

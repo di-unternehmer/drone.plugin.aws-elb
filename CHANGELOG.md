@@ -1,14 +1,20 @@
 # Changelog
-During the Alpha period, minor version releases in the 0.x.y range may introduce breaking changes to the pipes's interface. 
+Note: version releases in the 0.x.y range may introduce breaking changes.
 
-## [0.1.2] - 2018-11-22  - Alpha Release
-### Changed
-Use quotes for all pipes examples in README.md.
+## 0.2.0
 
-## [0.1.1] - 2018-11-14  - Alpha Release
-### Changed
-Restructure README.md to match user flow.
+- minor: Add support for the DEBUG flag.
+- minor: Switch naming convention from tasks to pipes.
 
-## [0.1.0] - 2018-10-17  - Alpha Release
-### Added
-Initial release of Bitbucket Pipelines AWS Elastic Beanstalk deployment pipe.
+## 0.1.2
+
+- minor: Use quotes for all pipes examples in README.md.
+
+## 0.1.1
+
+- minor: Restructure README.md to match user flow.
+
+## 0.1.0
+
+- minor: Initial release of Bitbucket Pipelines AWS Elastic Beanstalk deployment pipe.
+
