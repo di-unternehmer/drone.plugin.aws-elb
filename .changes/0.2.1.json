@@ -1,0 +1,6 @@
+[
+  {
+    "description": "Fixed incorrect reference to 'parameters' instead of 'variables' in the YAML definition.",
+    "type": "patch"
+  }
+]

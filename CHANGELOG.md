@@ -1,6 +1,10 @@
 # Changelog
 Note: version releases in the 0.x.y range may introduce breaking changes.
 
+## 0.2.1
+
+- patch: Fixed incorrect reference to 'parameters' instead of 'variables' in the YAML definition.
+
 ## 0.2.0
 
 - minor: Add support for the DEBUG flag.
