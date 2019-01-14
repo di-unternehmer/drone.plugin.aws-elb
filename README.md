@@ -8,7 +8,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
     
 ```yaml
 - pipe: atlassian/aws-elasticbeanstalk-deploy:0.2.0
-  parameters:
+  variables:
     AWS_ACCESS_KEY_ID: "<string>"
     AWS_SECRET_ACCESS_KEY: "<string>"
     AWS_DEFAULT_REGION: "<string>"
@@ -78,7 +78,7 @@ This pipe deploys a new version of an application to an Elastic Beanstalk enviro
 
 With Elastic Beanstalk, you can quickly deploy and manage applications in the AWS Cloud without worrying about the infrastructure that runs those applications. Elastic Beanstalk reduces management complexity without restricting choice or control. You simply upload your application, and Elastic Beanstalk automatically handles the details of capacity provisioning, load balancing, scaling, and application health monitoring.
 
-For advanced use cases and best practices, we recommend _build once and deploy many_ approach. So, if you have multiple environments we recommend using the parameter `COMMAND` to separate your CI/CD workflow into different operations / pipes:
+For advanced use cases and best practices, we recommend _build once and deploy many_ approach. So, if you have multiple environments we recommend using the `COMMAND` variable to separate your CI/CD workflow into different operations / pipes:
 
 - `COMMAND: "upload-only"`: It will upload the artifact and release a version in Elastic Beanstalk.
 - `COMMAND: "deploy-only"`: It will deploy the specified version to the desired environment(s). 
