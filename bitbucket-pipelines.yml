@@ -54,7 +54,7 @@ pipelines:
               - set -e
               - echo test_exit_code = $test_exit_code
               - pipe: atlassian/report-task-test-result:1.0.0
-                parameters:
+                variables:
                   DATADOG_API_KEY: $DATADOG_API_KEY
                   TASK_NAME: aws-elasticbeanstalk-deploy
                   TEST_EXIT_CODE: $test_exit_code
