@@ -1,2 +1,9 @@
-key: atlassian/aws-elasticbeanstalk-deploy
+name: AWS Code Deploy
 image: bitbucketpipelines/aws-elasticbeanstalk-deploy:0.2.1
+description: Deploy your code to AWS Elastic Beanstalk
+repository: https://bitbucket.org/atlassian/aws-elasticbeanstalk-deploy
+maintainer: Bitbucket Pipelines team
+icon: https://bitbucket.org/atlassian/aws-elasticbeanstalk-deploy/raw/master/logo_aws.svg
+tags:
+- deployment
+- AWS

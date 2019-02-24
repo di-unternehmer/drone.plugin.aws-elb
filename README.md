@@ -9,16 +9,16 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 ```yaml
 - pipe: atlassian/aws-elasticbeanstalk-deploy:0.2.1
   variables:
-    AWS_ACCESS_KEY_ID: "<string>"
-    AWS_SECRET_ACCESS_KEY: "<string>"
-    AWS_DEFAULT_REGION: "<string>"
-    APPLICATION_NAME: "<string>"
-    ENVIRONMENT_NAME: "<string>"
-    ZIP_FILE: "<string>"
-    # S3_BUCKET: "<string>" # Optional.
-    # VERSION_LABEL: "<string>" # Optional.
-    # WAIT: "<boolean>" # Optional.
-    # DEBUG: "<boolean>" # Optional.
+    AWS_ACCESS_KEY_ID: '<string>'
+    AWS_SECRET_ACCESS_KEY: '<string>'
+    AWS_DEFAULT_REGION: '<string>'
+    APPLICATION_NAME: '<string>'
+    ENVIRONMENT_NAME: '<string>'
+    ZIP_FILE: '<string>'
+    # S3_BUCKET: '<string>' # Optional.
+    # VERSION_LABEL: '<string>' # Optional.
+    # WAIT: '<boolean>' # Optional.
+    # DEBUG: '<boolean>' # Optional.
 ```
 
 ## Variables
@@ -80,8 +80,8 @@ With Elastic Beanstalk, you can quickly deploy and manage applications in the AW
 
 For advanced use cases and best practices, we recommend _build once and deploy many_ approach. So, if you have multiple environments we recommend using the `COMMAND` variable to separate your CI/CD workflow into different operations / pipes:
 
-- `COMMAND: "upload-only"`: It will upload the artifact and release a version in Elastic Beanstalk.
-- `COMMAND: "deploy-only"`: It will deploy the specified version to the desired environment(s). 
+- `COMMAND: 'upload-only'`: It will upload the artifact and release a version in Elastic Beanstalk.
+- `COMMAND: 'deploy-only'`: It will deploy the specified version to the desired environment(s). 
 
 
 ## Prerequisites
@@ -101,10 +101,10 @@ script:
     variables:
       AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-      AWS_DEFAULT_REGION: "us-east-1"
-      APPLICATION_NAME: "my-app-name"
-      ENVIRONMENT_NAME: "production"
-      ZIP_FILE: "application.zip"
+      AWS_DEFAULT_REGION: 'us-east-1'
+      APPLICATION_NAME: 'my-app-name'
+      ENVIRONMENT_NAME: 'production'
+      ZIP_FILE: 'application.zip'
 ```
 
 ### Advanced example:
@@ -117,11 +117,11 @@ Upload the artifact `application.zip` and create a version `deploy-$BITBUCKET_BU
     AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
     AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
-    APPLICATION_NAME: "application-test"
-    COMMAND: "upload-only"
-    ZIP_FILE: "application.zip"
-    S3_BUCKET: "application-test-bucket"
-    VERSION_LABEL: "deploy-$BITBUCKET_BUILD_NUMBER-multiple"
+    APPLICATION_NAME: 'application-test'
+    COMMAND: 'upload-only'
+    ZIP_FILE: 'application.zip'
+    S3_BUCKET: 'application-test-bucket'
+    VERSION_LABEL: 'deploy-$BITBUCKET_BUILD_NUMBER-multiple'
 ```
 
 Deploy your version `deploy-$BITBUCKET_BUILD_NUMBER-multiple` into the environment `production` and wait until the deployment is completed to see the status.
@@ -132,15 +132,15 @@ Deploy your version `deploy-$BITBUCKET_BUILD_NUMBER-multiple` into the environme
     AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
     AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
-    APPLICATION_NAME: "application-test"
-    COMMAND: "only-deploy"
-    VERSION_LABEL: "deploy-$BITBUCKET_BUILD_NUMBER-multiple"
-    ENVIRONMENT_NAME: "production"
-    WAIT: "true"
+    APPLICATION_NAME: 'application-test'
+    COMMAND: 'only-deploy'
+    VERSION_LABEL: 'deploy-$BITBUCKET_BUILD_NUMBER-multiple'
+    ENVIRONMENT_NAME: 'production'
+    WAIT: 'true'
 ```
 
 ## Support
-If you’d like help with this pipe, or you have an issue or feature request, [let us know on community][community].
+If you’d like help with this pipe, or you have an issue or feature request, [let us know on Community][community].
 
 If you’re reporting an issue, please include:
 
