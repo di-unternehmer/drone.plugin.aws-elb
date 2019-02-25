@@ -1,0 +1,6 @@
+[
+  {
+    "description": "Made wait interval configurable",
+    "type": "patch"
+  }
+]
