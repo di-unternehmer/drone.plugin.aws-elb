@@ -49,6 +49,7 @@ teardown() {
       -e VERSION_LABEL="${APPLICATION_NAME}-$(date -u "+%Y-%m-%d_%H%M%S")" \
       -e ZIP_FILE="$ZIP_FILE" \
       -e WAIT="true" \
+      -e WAIT_INTERVAL=10 \
       -v $(pwd):$(pwd) \
       -w $(pwd) \
     $IMAGE_NAME

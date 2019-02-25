@@ -18,6 +18,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
     # S3_BUCKET: '<string>' # Optional.
     # VERSION_LABEL: '<string>' # Optional.
     # WAIT: '<boolean>' # Optional.
+    # WAIT_INTERVAL: '<integer>' # Optional.
     # DEBUG: '<boolean>' # Optional.
 ```
 
@@ -36,6 +37,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 | S3_BUCKET                       |  Bucket name used by Elastic Beanstalk to store artifacts. Default: `${APPLICATION_NAME}-${ENVIRONMENT_NAME}-deployment}`. |
 | VERSION_LABEL                   |  Version label for the new application revision. Default: `${ENVIRONMENT_NAME}_${BITBUCKET_COMMIT:0:8}_YYYY-mm-dd_HHMMSS)`. |
 | WAIT                            |  Wait for deployment to complete. Default: `false`. |
+| WAIT_INTERVAL                   |  Time to wait between polling for deployment to complete (in seconds). Default: `10`. |
 | DEBUG                           |  Turn on extra debug information. |
 | COMMAND                         |  Command to be executed during the deployment. Valid options are `all`, `update-only`, `deploy-only`. Default: `all`. |
 | DEBUG                           |  Turn on extra debug information. Default: `false`. |
@@ -70,6 +72,7 @@ If `COMMAND` is set to `deploy-only`
 | ENVIRONMENT_NAME (*)            |  Environment name. |
 | VERSION_LABEL                   |  Version label for the new application revision. Default: `${ENVIRONMENT_NAME}_${BITBUCKET_COMMIT:0:8}_YYYY-mm-dd_HHMMSS)`. |
 | WAIT                            |  Wait for deployment to complete. Default: `false`. |
+| WAIT_INTERVAL                   |  Time to wait between polling for deployment to complete (in seconds). Default: `10`. |
 | DEBUG                           |  Turn on extra debug information. Default: `false`. |
 
 ## Details

@@ -14,6 +14,7 @@
 #   S3_BUCKET (default: ${APPLICATION_NAME}-elasticbeanstalk-deployment})
 #   VERSION_LABEL (default: ${APPLICATION_NAME}-${BITBUCKET_BUILD_NUMBER}-${BITBUCKET_COMMIT:0:8}
 #   WAIT (default: false)
+#   WAIT_INTERVAL (default: 10)
 #   DEBUG (default: false)
 
 source "$(dirname "$0")/common.sh"
@@ -37,10 +38,10 @@ fi
 S3_BUCKET=${S3_BUCKET:=${APPLICATION_NAME}-elasticbeanstalk-deployment}
 VERSION_LABEL=${VERSION_LABEL:=${APPLICATION_NAME}-${BITBUCKET_BUILD_NUMBER}-${BITBUCKET_COMMIT:0:8}}
 WAIT=${WAIT:="false"}
+WAIT_INTERVAL=${WAIT_INTERVAL:=10}
 
 # local variables
 VERSION_LABEL=${VERSION_LABEL:0:50}
-WAIT_INTERVAL=10
 
 debug "COMMAND = $COMMAND"
 
