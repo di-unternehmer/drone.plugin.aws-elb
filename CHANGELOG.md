@@ -1,6 +1,10 @@
 # Changelog
 Note: version releases in the 0.x.y range may introduce breaking changes.
 
+## 0.2.4
+
+- patch: Update default S3_BUCKET name in readme.
+
 ## 0.2.3
 
 - patch: Made wait interval configurable

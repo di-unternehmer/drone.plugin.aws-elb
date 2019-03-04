@@ -1,0 +1,6 @@
+[
+  {
+    "description": "Update default S3_BUCKET name in readme.",
+    "type": "patch"
+  }
+]
