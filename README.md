@@ -34,7 +34,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 | APPLICATION_NAME (*)            |  The name of the Elastic Beanstalk application. |
 | ENVIRONMENT_NAME (*)            |  Environment name. |
 | ZIP_FILE (*)                    |  The zip file to deploy. |
-| S3_BUCKET                       |  Bucket name used by Elastic Beanstalk to store artifacts. Default: `${APPLICATION_NAME}-${ENVIRONMENT_NAME}-deployment}`. |
+| S3_BUCKET                       |  Bucket name used by Elastic Beanstalk to store artifacts. Default: `${APPLICATION_NAME}-elasticbeanstalk-deployment}`. |
 | VERSION_LABEL                   |  Version label for the new application revision. Default: `${ENVIRONMENT_NAME}_${BITBUCKET_COMMIT:0:8}_YYYY-mm-dd_HHMMSS)`. |
 | WAIT                            |  Wait for deployment to complete. Default: `false`. |
 | WAIT_INTERVAL                   |  Time to wait between polling for deployment to complete (in seconds). Default: `10`. |
@@ -56,7 +56,7 @@ If `COMMAND` is set to `upload-only`
 | APPLICATION_NAME (*)            |  The name of the Elastic Beanstalk application. |
 | COMMAND (*)                     |  Command to be used. Use `upload-only` here. |
 | ZIP_FILE (*)                    |  The zip file to deploy. |
-| S3_BUCKET                       |  Bucket name used by Elastic Beanstalk to store artifacts. Default: `${APPLICATION_NAME}-${ENVIRONMENT_NAME}-deployment}`. |
+| S3_BUCKET                       |  Bucket name used by Elastic Beanstalk to store artifacts. Default: `${APPLICATION_NAME}-elasticbeanstalk-deployment}`. |
 | VERSION_LABEL                   |  Version label for the new application revision. Default: `${ENVIRONMENT_NAME}_${BITBUCKET_COMMIT:0:8}_YYYY-mm-dd_HHMMSS)`. |
 | DEBUG                           |  Turn on extra debug information. Default: `false`. |
 
@@ -90,7 +90,7 @@ For advanced use cases and best practices, we recommend _build once and deploy m
 ## Prerequisites
 * An IAM user is configured with sufficient permissions to perform a deployment to your application and upload artifacts to the S3 bucket.
 * You have configured the Elastic Beanstalk application and environment.
-* An S3 bucket has been set up to which deployment artifacts will be copied. Use name `${APPLICATION_NAME}-${ENVIRONMENT_NAME}-deployment}` to automatically use it.
+* An S3 bucket has been set up to which deployment artifacts will be copied. Use name `${APPLICATION_NAME}-elasticbeanstalk-deployment}` to automatically use it.
 
 ## Examples 
 
