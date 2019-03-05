@@ -63,7 +63,7 @@ teardown() {
 @test "test invalid COMMAND fails the pipe" {
 
     # Run pipe
-    docker run \
+    run docker run \
       -e COMMAND="only-deploy" \
       -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" \
       -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" \
@@ -79,6 +79,6 @@ teardown() {
       -w $(pwd) \
     $IMAGE_NAME
 
-    [[ "${status}" -ne 1 ]]
+    [[ "${status}" -ne 0 ]]
     [[ "${output}" == *"Invalid COMMAND value"* ]]
 }

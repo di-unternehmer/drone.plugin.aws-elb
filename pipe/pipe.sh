@@ -27,6 +27,10 @@ APPLICATION_NAME=${APPLICATION_NAME:?'You need to configure the APPLICATION_NAME
 
 COMMAND=${COMMAND:="all"}
 
+if ! [[ "$COMMAND" =~ ^(deploy-only|upload-only|all)$ ]]; then 
+    fail "Invalid COMMAND value. Possible values are deploy-only, upload-only, all." ; 
+fi
+
 if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
     ZIP_FILE=${ZIP_FILE:?'You need to configure the ZIP_FILE variable!'}
 fi
@@ -56,9 +60,10 @@ if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
     aws elasticbeanstalk create-application-version --application-name "${APPLICATION_NAME}" --version-label "${VERSION_LABEL}" --source-bundle "S3Bucket=${S3_BUCKET},S3Key=${VERSION_LABEL}.zip" ${aws_debug_args}
 
     success "Application version ${VERSION_LABEL} successfully created in Elastic Beanstalk."
+fi
 
 
-elif [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
+if [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
 
     info "Updating environment in Elastic Beanstalk..."
     aws elasticbeanstalk update-environment --environment-name "${ENVIRONMENT_NAME}" --version-label "${VERSION_LABEL}" ${aws_debug_args}
@@ -100,6 +105,5 @@ elif [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
             fail "Deployment failed. Environment \"${ENVIRONMENT_NAME}\" is ${health}."
         fi
     fi
-else
-    fail "Invalid COMMAND value. Valid values are all, deploy-only and upload-only!"
 fi
+
