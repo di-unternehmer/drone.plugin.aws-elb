@@ -59,3 +59,26 @@ teardown() {
     [[ "${status}" -eq 0 ]]
     [[ "${output}" == *"$RANDOM_NUMBER"* ]]
 }
+
+@test "test invalid COMMAND fails the pipe" {
+
+    # Run pipe
+    docker run \
+      -e COMMAND="only-deploy" \
+      -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" \
+      -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" \
+      -e AWS_DEFAULT_REGION="ap-southeast-2" \
+      -e APPLICATION_NAME="$APPLICATION_NAME" \
+      -e ENVIRONMENT_NAME="$ENVIRONMENT_NAME" \
+      -e S3_BUCKET="${APPLICATION_NAME}-master-deployment" \
+      -e VERSION_LABEL="${APPLICATION_NAME}-$(date -u "+%Y-%m-%d_%H%M%S")" \
+      -e ZIP_FILE="$ZIP_FILE" \
+      -e WAIT="true" \
+      -e WAIT_INTERVAL=10 \
+      -v $(pwd):$(pwd) \
+      -w $(pwd) \
+    $IMAGE_NAME
+
+    [[ "${status}" -ne 1 ]]
+    [[ "${output}" == *"Invalid COMMAND value"* ]]
+}

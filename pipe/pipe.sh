@@ -56,9 +56,9 @@ if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
     aws elasticbeanstalk create-application-version --application-name "${APPLICATION_NAME}" --version-label "${VERSION_LABEL}" --source-bundle "S3Bucket=${S3_BUCKET},S3Key=${VERSION_LABEL}.zip" ${aws_debug_args}
 
     success "Application version ${VERSION_LABEL} successfully created in Elastic Beanstalk."
-fi
 
-if [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
+
+elif [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
 
     info "Updating environment in Elastic Beanstalk..."
     aws elasticbeanstalk update-environment --environment-name "${ENVIRONMENT_NAME}" --version-label "${VERSION_LABEL}" ${aws_debug_args}
@@ -100,5 +100,6 @@ if [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
             fail "Deployment failed. Environment \"${ENVIRONMENT_NAME}\" is ${health}."
         fi
     fi
-
+else
+    fail "Invalid COMMAND value. Valid values are all, deploy-only and upload-only!"
 fi
