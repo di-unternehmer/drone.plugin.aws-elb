@@ -1,0 +1,6 @@
+[
+  {
+    "description": "Fix the COMMAND parameter validation",
+    "type": "patch"
+  }
+]
