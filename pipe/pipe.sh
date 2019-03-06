@@ -27,6 +27,10 @@ APPLICATION_NAME=${APPLICATION_NAME:?'You need to configure the APPLICATION_NAME
 
 COMMAND=${COMMAND:="all"}
 
+if ! [[ "$COMMAND" =~ ^(deploy-only|upload-only|all)$ ]]; then 
+    fail "Invalid COMMAND value. Possible values are deploy-only, upload-only, all." ; 
+fi
+
 if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
     ZIP_FILE=${ZIP_FILE:?'You need to configure the ZIP_FILE variable!'}
 fi
@@ -57,6 +61,7 @@ if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
 
     success "Application version ${VERSION_LABEL} successfully created in Elastic Beanstalk."
 fi
+
 
 if [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
 
@@ -100,5 +105,5 @@ if [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
             fail "Deployment failed. Environment \"${ENVIRONMENT_NAME}\" is ${health}."
         fi
     fi
-
 fi
+

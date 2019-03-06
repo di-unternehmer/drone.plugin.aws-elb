@@ -136,7 +136,7 @@ Deploy your version `deploy-$BITBUCKET_BUILD_NUMBER-multiple` into the environme
     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
     AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
     APPLICATION_NAME: 'application-test'
-    COMMAND: 'only-deploy'
+    COMMAND: 'deploy-only'
     VERSION_LABEL: 'deploy-$BITBUCKET_BUILD_NUMBER-multiple'
     ENVIRONMENT_NAME: 'production'
     WAIT: 'true'
