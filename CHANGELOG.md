@@ -1,6 +1,10 @@
 # Changelog
 Note: version releases in the 0.x.y range may introduce breaking changes.
 
+## 0.2.6
+
+- patch: Updated contributing guidelines
+
 ## 0.2.5
 
 - patch: Fix the COMMAND parameter validation
