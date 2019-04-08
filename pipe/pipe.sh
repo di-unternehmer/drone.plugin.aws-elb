@@ -11,8 +11,8 @@
 #
 # Optional globals:
 #
-#   S3_BUCKET (default: ${APPLICATION_NAME}-elasticbeanstalk-deployment})
-#   VERSION_LABEL (default: ${APPLICATION_NAME}-${BITBUCKET_BUILD_NUMBER}-${BITBUCKET_COMMIT:0:8}
+#   S3_BUCKET (default: ${APPLICATION_NAME}-elasticbeanstalk-deployment)
+#   VERSION_LABEL (default: ${APPLICATION_NAME}-${BITBUCKET_BUILD_NUMBER}-${BITBUCKET_COMMIT:0:8})
 #   WAIT (default: false)
 #   WAIT_INTERVAL (default: 10)
 #   DEBUG (default: false)
