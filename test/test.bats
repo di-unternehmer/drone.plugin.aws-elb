@@ -18,6 +18,7 @@ setup() {
 
 teardown() {
     rm -f artifact-*.*
+    git checkout test/code/index.html 
 
     # TODO: automatize environment teardown
     #aws elasticbeanstalk terminate-environment --environment-name $ENV_NAME
