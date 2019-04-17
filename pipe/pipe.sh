@@ -34,7 +34,7 @@ fi
 if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
     ZIP_FILE=${ZIP_FILE:?'You need to configure the ZIP_FILE variable!'}
     ZIP_FILE_NAME=$(basename -- "${ZIP_FILE}")
-    ZIP_FILE_EXTENSION="${ZIP_FILE_NAME#*.}"
+    ZIP_FILE_EXTENSION="${ZIP_FILE_NAME##*.}"
 fi
 if [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
     ENVIRONMENT_NAME=${ENVIRONMENT_NAME:?'You need to configure the ENVIRONMENT_NAME variable!'}
