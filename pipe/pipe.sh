@@ -99,7 +99,7 @@ if [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
         version=$(echo "$environment_details" | jq -r '.Environments[0].VersionLabel')
 
         if [ "$version" != "$VERSION_LABEL" ]; then
-            fail "Deployment failed. Environment \"${ENVIRONMENT_NAME}\" is running version \"${version}\""
+            fail "Deployment failed. Environment \"${ENVIRONMENT_NAME}\" is running a different version \"${version}\"."
         fi
 
         if [ "${health}" == "Green" ] || [ "${health}" == "Yellow" ]; then
