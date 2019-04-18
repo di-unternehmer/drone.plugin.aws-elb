@@ -100,6 +100,10 @@ if [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
         health=$(echo "$environment_details" | jq -r '.Environments[0].Health')
         version=$(echo "$environment_details" | jq -r '.Environments[0].VersionLabel')
 
+        if [ "$version" != "$VERSION_LABEL" ]; then
+            fail "Deployment failed. Environment \"${ENVIRONMENT_NAME}\" is running a different version \"${version}\"."
+        fi
+
         if [ "${health}" == "Green" ] || [ "${health}" == "Yellow" ]; then
             info "Environment \"${ENVIRONMENT_NAME}\" is now running version \"${version}\" with status \"${status}\"."
             success "Deployment successful. URL: http://${url}"

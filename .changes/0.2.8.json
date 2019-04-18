@@ -1,0 +1,6 @@
+[
+  {
+    "description": "Pipe now correctly handles failed environment updates",
+    "type": "patch"
+  }
+]
