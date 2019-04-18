@@ -4,8 +4,7 @@ set -e
 
 setup() {
     # variables
-    # IMAGE_NAME="${DOCKERHUB_IMAGE}:${DOCKERHUB_TAG}"
-    IMAGE_NAME="test/aws_eb:latest"
+    IMAGE_NAME="${DOCKERHUB_IMAGE}:${DOCKERHUB_TAG}"
 
     APPLICATION_NAME="bbci-task-elasticbeanstalk"
     ENVIRONMENT_NAME="master"
