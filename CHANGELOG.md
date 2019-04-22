@@ -1,6 +1,10 @@
 # Changelog
 Note: version releases in the 0.x.y range may introduce breaking changes.
 
+## 0.2.9
+
+- patch: Fixed preserve the extension of the application source bundle
+
 ## 0.2.8
 
 - patch: Pipe now correctly handles failed environment updates

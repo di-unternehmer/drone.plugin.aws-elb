@@ -1,0 +1,6 @@
+[
+  {
+    "description": "Fixed preserve the extension of the application source bundle",
+    "type": "patch"
+  }
+]
