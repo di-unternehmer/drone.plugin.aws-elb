@@ -25,7 +25,10 @@ AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:?'You need to configure the AWS_SE
 AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:?'You need to configure the AWS_DEFAULT_REGION variable!'}
 APPLICATION_NAME=${APPLICATION_NAME:?'You need to configure the APPLICATION_NAME variable!'}
 
+VALID_FILE_EXTENSIONS='zip jar war'
+
 COMMAND=${COMMAND:="all"}
+
 
 if ! [[ "$COMMAND" =~ ^(deploy-only|upload-only|all)$ ]]; then 
     fail "Invalid COMMAND value. Possible values are deploy-only, upload-only, all." ; 
@@ -33,7 +36,32 @@ fi
 
 if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
     ZIP_FILE=${ZIP_FILE:?'You need to configure the ZIP_FILE variable!'}
+    ZIP_FILE_NAME=$(basename -- "${ZIP_FILE}")
+    # return as dot_extension "zip" for "filename.zip" or "filename" for "filename"
+    if [[ "${ZIP_FILE_NAME}" == "${ZIP_FILE_NAME##*.}" ]];then
+        # no extension provided
+        ZIP_FILE_EXTENSION=''
+    else
+        # dot_extension
+        ZIP_FILE_EXTENSION=".${ZIP_FILE_NAME##*.}"
+    fi
+
+    # default value
+    IS_VALID_EXTENSION='false'
+
+    # check valid extension
+    for value in ${VALID_FILE_EXTENSIONS}
+        do
+            if [[ "${ZIP_FILE_EXTENSION}" == ${value} ]]; then
+                IS_VALID_EXTENSION='true'
+            fi
+        done
+
+    if [[ "${IS_VALID_EXTENSION}" == 'false' ]]; then
+        info "The application source bundle doesn’t have a known file extension (zip, jar or war). This might cause some issues."
+    fi
 fi
+
 if [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
     ENVIRONMENT_NAME=${ENVIRONMENT_NAME:?'You need to configure the ENVIRONMENT_NAME variable!'}
 fi
@@ -52,12 +80,12 @@ debug "COMMAND = $COMMAND"
 if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
 
     info "Uploading to s3 bucket: ${S3_BUCKET}..."
-    aws s3 cp "${ZIP_FILE}" "s3://${S3_BUCKET}/${VERSION_LABEL}.zip" ${aws_debug_args}
+    aws s3 cp "${ZIP_FILE}" "s3://${S3_BUCKET}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}" ${aws_debug_args}
 
-    success "Artifact uploaded successfully to s3://${S3_BUCKET}/${VERSION_LABEL}.zip"
+    success "Artifact uploaded successfully to s3://${S3_BUCKET}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}"
 
     info "Creating application version in Elastic Beanstalk..."
-    aws elasticbeanstalk create-application-version --application-name "${APPLICATION_NAME}" --version-label "${VERSION_LABEL}" --source-bundle "S3Bucket=${S3_BUCKET},S3Key=${VERSION_LABEL}.zip" ${aws_debug_args}
+    aws elasticbeanstalk create-application-version --application-name "${APPLICATION_NAME}" --version-label "${VERSION_LABEL}" --source-bundle "S3Bucket=${S3_BUCKET},S3Key=${VERSION_LABEL}${ZIP_FILE_EXTENSION}" ${aws_debug_args}
 
     success "Application version ${VERSION_LABEL} successfully created in Elastic Beanstalk."
 fi

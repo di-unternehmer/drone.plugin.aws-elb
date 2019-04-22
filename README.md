@@ -33,7 +33,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 | AWS_DEFAULT_REGION (*)          |  The AWS region code (us-east-1, us-west-2, etc.) of the region containing the AWS resource(s). For more information, see [Regions and Endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html) in the _Amazon Web Services General Reference_. |
 | APPLICATION_NAME (*)            |  The name of the Elastic Beanstalk application. |
 | ENVIRONMENT_NAME (*)            |  Environment name. |
-| ZIP_FILE (*)                    |  The zip file to deploy. |
+| ZIP_FILE (*)                    |  The application source bundle to deploy (zip, jar, war). |
 | S3_BUCKET                       |  Bucket name used by Elastic Beanstalk to store artifacts. Default: `${APPLICATION_NAME}-elasticbeanstalk-deployment`. |
 | VERSION_LABEL                   |  Version label for the new application revision. Default: `${APPLICATION_NAME}-${BITBUCKET_BUILD_NUMBER}-${BITBUCKET_COMMIT:0:8}`. |
 | WAIT                            |  Wait for deployment to complete. Default: `false`. |
@@ -55,7 +55,7 @@ If `COMMAND` is set to `upload-only`
 | AWS_DEFAULT_REGION (*)          |  The AWS region code (us-east-1, us-west-2, etc.) of the region containing the AWS resource(s). For more information, see [Regions and Endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html) in the _Amazon Web Services General Reference_. |
 | APPLICATION_NAME (*)            |  The name of the Elastic Beanstalk application. |
 | COMMAND (*)                     |  Command to be used. Use `upload-only` here. |
-| ZIP_FILE (*)                    |  The zip file to deploy. |
+| ZIP_FILE (*)                    |  The application source bundle to deploy (zip, jar, war). |
 | S3_BUCKET                       |  Bucket name used by Elastic Beanstalk to store artifacts. Default: `${APPLICATION_NAME}-elasticbeanstalk-deployment}`. |
 | VERSION_LABEL                   |  Version label for the new application revision. Default: `${ENVIRONMENT_NAME}_${BITBUCKET_COMMIT:0:8}_YYYY-mm-dd_HHMMSS)`. |
 | DEBUG                           |  Turn on extra debug information. Default: `false`. |
