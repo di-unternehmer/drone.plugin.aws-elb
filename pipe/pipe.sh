@@ -80,12 +80,12 @@ debug "COMMAND = $COMMAND"
 if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
 
     info "Uploading to s3 bucket: ${S3_BUCKET}..."
-    aws s3 cp "${ZIP_FILE}" "s3://${S3_BUCKET}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}" ${aws_debug_args}
+    aws s3 cp "${ZIP_FILE}" "s3://${S3_BUCKET}/${APPLICATION_NAME}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}" ${aws_debug_args}
 
     success "Artifact uploaded successfully to s3://${S3_BUCKET}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}"
 
     info "Creating application version in Elastic Beanstalk..."
-    aws elasticbeanstalk create-application-version --application-name "${APPLICATION_NAME}" --version-label "${VERSION_LABEL}" --source-bundle "S3Bucket=${S3_BUCKET},S3Key=${VERSION_LABEL}${ZIP_FILE_EXTENSION}" ${aws_debug_args}
+    aws elasticbeanstalk create-application-version --application-name "${APPLICATION_NAME}" --version-label "${VERSION_LABEL}" --source-bundle "S3Bucket=${S3_BUCKET},S3Key=${APPLICATION_NAME}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}" ${aws_debug_args}
 
     success "Application version ${VERSION_LABEL} successfully created in Elastic Beanstalk."
 fi
