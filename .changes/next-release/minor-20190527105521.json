@@ -1,4 +1,0 @@
-{
-  "type": "minor",
-  "description": "The pipe will now use the APPLICATION_NAME variable to create a subfolder in the S3 bucket. This will allow better artifacts organisation when reusing the same bucket for many applications."
-}
