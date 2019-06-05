@@ -64,7 +64,7 @@ if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
         done
 
     if [[ "${IS_VALID_EXTENSION}" == 'false' ]]; then
-        info "The application source bundle doesn�t have a known file extension (zip, jar or war). This might cause some issues."
+        info "The application source bundle doesn't have a known file extension (zip, jar or war). This might cause some issues."
     fi
 fi
 
