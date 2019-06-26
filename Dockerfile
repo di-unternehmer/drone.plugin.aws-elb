@@ -1,5 +1,8 @@
-FROM atlassian/pipelines-awscli:1.16.18
+FROM atlassian/pipelines-awscli:1.16.185
 
-COPY pipe /usr/bin/
+RUN wget -P / https://bitbucket.org/bitbucketpipelines/bitbucket-pipes-toolkit-bash/raw/0.4.0/common.sh
 
-ENTRYPOINT ["/usr/bin/pipe.sh"]
+COPY pipe /
+COPY LICENSE.txt README.md pipe.yml /
+
+ENTRYPOINT ["/pipe.sh"]
