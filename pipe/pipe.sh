@@ -29,6 +29,11 @@ VALID_FILE_EXTENSIONS='zip jar war'
 
 COMMAND=${COMMAND:="all"}
 
+AWS_DEBUG_ARGS=""
+if [[ "${DEBUG}" == "true" ]]; then
+    info "Enabling debug mode."
+    AWS_DEBUG_ARGS="--debug"
+fi
 
 if ! [[ "$COMMAND" =~ ^(deploy-only|upload-only|all)$ ]]; then 
     fail "Invalid COMMAND value. Possible values are deploy-only, upload-only, all." ; 
@@ -80,12 +85,12 @@ debug "COMMAND = $COMMAND"
 if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
 
     info "Uploading to s3 bucket: ${S3_BUCKET}..."
-    aws s3 cp "${ZIP_FILE}" "s3://${S3_BUCKET}/${APPLICATION_NAME}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}" ${aws_debug_args}
+    aws s3 cp "${ZIP_FILE}" "s3://${S3_BUCKET}/${APPLICATION_NAME}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}" ${AWS_DEBUG_ARGS}
 
     success "Artifact uploaded successfully to s3://${S3_BUCKET}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}"
 
     info "Creating application version in Elastic Beanstalk..."
-    aws elasticbeanstalk create-application-version --application-name "${APPLICATION_NAME}" --version-label "${VERSION_LABEL}" --source-bundle "S3Bucket=${S3_BUCKET},S3Key=${APPLICATION_NAME}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}" ${aws_debug_args}
+    aws elasticbeanstalk create-application-version --application-name "${APPLICATION_NAME}" --version-label "${VERSION_LABEL}" --source-bundle "S3Bucket=${S3_BUCKET},S3Key=${APPLICATION_NAME}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}" ${AWS_DEBUG_ARGS}
 
     success "Application version ${VERSION_LABEL} successfully created in Elastic Beanstalk."
 fi
@@ -94,11 +99,11 @@ fi
 if [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
 
     info "Updating environment in Elastic Beanstalk..."
-    aws elasticbeanstalk update-environment --environment-name "${ENVIRONMENT_NAME}" --version-label "${VERSION_LABEL}" ${aws_debug_args}
+    aws elasticbeanstalk update-environment --environment-name "${ENVIRONMENT_NAME}" --version-label "${VERSION_LABEL}" ${AWS_DEBUG_ARGS}
 
     # check if the deployment was successful
     function check_environment() {
-      aws elasticbeanstalk describe-environments --application-name "${APPLICATION_NAME}" --environment-names "${ENVIRONMENT_NAME}" ${aws_debug_args}
+      aws elasticbeanstalk describe-environments --application-name "${APPLICATION_NAME}" --environment-names "${ENVIRONMENT_NAME}" ${AWS_DEBUG_ARGS}
     }
 
     # Get environment details
