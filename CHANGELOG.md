@@ -1,6 +1,10 @@
 # Changelog
 Note: version releases in the 0.x.y range may introduce breaking changes.
 
+## 0.3.1
+
+- patch: Refactor pipe code to use pipes bash toolkit.
+
 ## 0.3.0
 
 - minor: The pipe will now use the APPLICATION_NAME variable to create a subfolder in the S3 bucket. This will allow better artifacts organisation when reusing the same bucket for many applications.
