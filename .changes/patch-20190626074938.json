@@ -1,4 +1,0 @@
-{
-  "type": "patch",
-  "description": "Update aws-cli base docker image version."
-}
