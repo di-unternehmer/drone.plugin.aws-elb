@@ -1,0 +1,6 @@
+[
+  {
+    "description": "Fix incorrect S3 key being reported during deploy",
+    "type": "patch"
+  }
+]
