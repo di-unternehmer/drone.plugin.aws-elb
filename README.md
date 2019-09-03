@@ -17,6 +17,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
     ZIP_FILE: '<string>'
     # S3_BUCKET: '<string>' # Optional.
     # VERSION_LABEL: '<string>' # Optional.
+    # DESCRIPTION: '<string>' # Optional.
     # WAIT: '<boolean>' # Optional.
     # WAIT_INTERVAL: '<integer>' # Optional.
     # DEBUG: '<boolean>' # Optional.
@@ -36,6 +37,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 | ZIP_FILE (*)                    |  The application source bundle to deploy (zip, jar, war). |
 | S3_BUCKET                       |  Bucket name used by Elastic Beanstalk to store artifacts. Default: `${APPLICATION_NAME}-elasticbeanstalk-deployment`. |
 | VERSION_LABEL                   |  Version label for the new application revision. Default: `${APPLICATION_NAME}-${BITBUCKET_BUILD_NUMBER}-${BITBUCKET_COMMIT:0:8}`. |
+| DESCRIPTION                     |  Description for the new application revision. Default: "". |
 | WAIT                            |  Wait for deployment to complete. Default: `false`. |
 | WAIT_INTERVAL                   |  Time to wait between polling for deployment to complete (in seconds). Default: `10`. |
 | DEBUG                           |  Turn on extra debug information. |
@@ -58,6 +60,7 @@ If `COMMAND` is set to `upload-only`
 | ZIP_FILE (*)                    |  The application source bundle to deploy (zip, jar, war). |
 | S3_BUCKET                       |  Bucket name used by Elastic Beanstalk to store artifacts. Default: `${APPLICATION_NAME}-elasticbeanstalk-deployment}`. |
 | VERSION_LABEL                   |  Version label for the new application revision. Default: `${ENVIRONMENT_NAME}_${BITBUCKET_COMMIT:0:8}_YYYY-mm-dd_HHMMSS)`. |
+| DESCRIPTION                     |  Description for the new application revision. Default: "". |
 | DEBUG                           |  Turn on extra debug information. Default: `false`. |
 
 If `COMMAND` is set to `deploy-only`

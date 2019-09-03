@@ -13,6 +13,7 @@
 #
 #   S3_BUCKET (default: ${APPLICATION_NAME}-elasticbeanstalk-deployment)
 #   VERSION_LABEL (default: ${APPLICATION_NAME}-${BITBUCKET_BUILD_NUMBER}-${BITBUCKET_COMMIT:0:8})
+#   DESCRIPTION (default: "")
 #   WAIT (default: false)
 #   WAIT_INTERVAL (default: 10)
 #   DEBUG (default: false)
@@ -63,7 +64,7 @@ if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
         done
 
     if [[ "${IS_VALID_EXTENSION}" == 'false' ]]; then
-        info "The application source bundle doesn’t have a known file extension (zip, jar or war). This might cause some issues."
+        info "The application source bundle doesn't have a known file extension (zip, jar or war). This might cause some issues."
     fi
 fi
 
@@ -76,6 +77,7 @@ S3_BUCKET=${S3_BUCKET:=${APPLICATION_NAME}-elasticbeanstalk-deployment}
 VERSION_LABEL=${VERSION_LABEL:=${APPLICATION_NAME}-${BITBUCKET_BUILD_NUMBER}-${BITBUCKET_COMMIT:0:8}}
 WAIT=${WAIT:="false"}
 WAIT_INTERVAL=${WAIT_INTERVAL:=10}
+DESCRIPTION=${DESCRIPTION:=""}
 
 # local variables
 VERSION_LABEL=${VERSION_LABEL:0:50}
@@ -90,11 +92,10 @@ if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
     success "Artifact uploaded successfully to s3://${S3_BUCKET}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}"
 
     info "Creating application version in Elastic Beanstalk..."
-    aws elasticbeanstalk create-application-version --application-name "${APPLICATION_NAME}" --version-label "${VERSION_LABEL}" --source-bundle "S3Bucket=${S3_BUCKET},S3Key=${APPLICATION_NAME}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}" ${AWS_DEBUG_ARGS}
+    aws elasticbeanstalk create-application-version --application-name "${APPLICATION_NAME}" --version-label "${VERSION_LABEL}" --description "${DESCRIPTION}" --source-bundle "S3Bucket=${S3_BUCKET},S3Key=${APPLICATION_NAME}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}" ${AWS_DEBUG_ARGS}
 
     success "Application version ${VERSION_LABEL} successfully created in Elastic Beanstalk."
 fi
-
 
 if [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
 
@@ -143,4 +144,3 @@ if [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
         fi
     fi
 fi
-
