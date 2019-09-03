@@ -1,0 +1,10 @@
+[
+  {
+    "description": "New DESCRIPTION parameter was introduced",
+    "type": "minor"
+  },
+  {
+    "description": "Fixed testing dependencies",
+    "type": "patch"
+  }
+]

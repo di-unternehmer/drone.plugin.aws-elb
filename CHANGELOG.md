@@ -1,6 +1,11 @@
 # Changelog
 Note: version releases in the 0.x.y range may introduce breaking changes.
 
+## 0.4.0
+
+- minor: New DESCRIPTION parameter was introduced
+- patch: Fixed testing dependencies
+
 ## 0.3.1
 
 - patch: Refactor pipe code to use pipes bash toolkit.
