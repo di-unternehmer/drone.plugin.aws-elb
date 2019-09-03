@@ -6,6 +6,10 @@ Note: version releases in the 0.x.y range may introduce breaking changes.
 - minor: New DESCRIPTION parameter was introduced
 - patch: Fixed testing dependencies
 
+## 0.3.2
+
+- patch: Fix incorrect S3 key being reported during deploy
+
 ## 0.3.1
 
 - patch: Refactor pipe code to use pipes bash toolkit.
