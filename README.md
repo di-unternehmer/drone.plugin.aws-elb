@@ -37,7 +37,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 | ZIP_FILE (*)                    |  The application source bundle to deploy (zip, jar, war). |
 | S3_BUCKET                       |  Bucket name used by Elastic Beanstalk to store artifacts. Default: `${APPLICATION_NAME}-elasticbeanstalk-deployment`. |
 | VERSION_LABEL                   |  Version label for the new application revision. Default: `${APPLICATION_NAME}-${BITBUCKET_BUILD_NUMBER}-${BITBUCKET_COMMIT:0:8}`. |
-| DESCRIPTION                     |  Description for the new application revision. Default: "". |
+| DESCRIPTION                     |  Description for the new application revision. Default: a URL pointing to the pipeline result page. |
 | WAIT                            |  Wait for deployment to complete. Default: `false`. |
 | WAIT_INTERVAL                   |  Time to wait between polling for deployment to complete (in seconds). Default: `10`. |
 | DEBUG                           |  Turn on extra debug information. |
