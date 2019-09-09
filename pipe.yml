@@ -1,5 +1,5 @@
 name: AWS Code Deploy
-image: bitbucketpipelines/aws-elasticbeanstalk-deploy:0.4.0
+image: bitbucketpipelines/aws-elasticbeanstalk-deploy:0.4.1
 description: Deploy your code to AWS Elastic Beanstalk
 repository: https://bitbucket.org/atlassian/aws-elasticbeanstalk-deploy
 maintainer: Bitbucket Pipelines team

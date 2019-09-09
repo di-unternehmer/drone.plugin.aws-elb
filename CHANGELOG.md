@@ -1,6 +1,10 @@
 # Changelog
 Note: version releases in the 0.x.y range may introduce breaking changes.
 
+## 0.4.1
+
+- patch: Internal maintenance: Fix versioning
+
 ## 0.4.0
 
 - minor: New DESCRIPTION parameter was introduced
