@@ -1,6 +1,10 @@
 # Changelog
 Note: version releases in the 0.x.y range may introduce breaking changes.
 
+## 0.5.0
+
+- minor: Changed the default value for the DESCRIPTION to be the pipeline URL.
+
 ## 0.4.1
 
 - patch: Internal maintenance: Fix versioning

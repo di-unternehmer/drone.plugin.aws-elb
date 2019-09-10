@@ -1,0 +1,6 @@
+[
+  {
+    "description": "Changed the default value for the DESCRIPTION to be the pipeline URL.",
+    "type": "minor"
+  }
+]
