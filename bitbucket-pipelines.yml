@@ -1,6 +1,22 @@
 image:
   name: atlassian/default-image:2
 
+release-dev: &release-dev
+  step:
+    name: Release development version
+    image: python:3.7
+    script:
+      - set -ex
+      - pip install semversioner
+      - VERSION=$(semversioner current-version)
+      - IMAGE=bitbucketpipelines/$BITBUCKET_REPO_SLUG
+      - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+      - docker build -t ${IMAGE} .
+      - docker tag ${IMAGE} ${IMAGE}:${VERSION}-dev
+      - docker push ${IMAGE}:${VERSION}-dev
+    services:
+      - docker
+
 test: &test
   step:
     name: Test
@@ -10,6 +26,7 @@ test: &test
       - export DOCKERHUB_TAG=${BITBUCKET_BUILD_NUMBER}
       - apt-get update && apt-get install zip openjdk-11-jdk -y
       - pip install -r test/requirements.txt
+      - printenv
       - pytest -v test/test.py  --junitxml=test-reports/report.xml
     services:
       - docker
@@ -31,6 +48,7 @@ push: &push
 pipelines:
     default:
     - <<: *test
+    - <<: *release-dev
     branches:
         master:
         - <<: *test

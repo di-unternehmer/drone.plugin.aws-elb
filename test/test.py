@@ -5,6 +5,7 @@ import datetime
 import subprocess
 
 import requests
+import boto3
 
 from bitbucket_pipes_toolkit.test import PipeTestCase
 
@@ -65,6 +66,35 @@ class ECSDeployTestCase(PipeTestCase):
 
         self.assertIn(str(self.randon_number), response.text)
 
+    def test_default_description_should_have_url(self):
+        "artifact .zip file can be deployed to Elastic Beanstalk"
+        application_name = os.getenv('APPLICATION_NAME')
+        version_label = f"{application_name}-{isoformat_now()}"
+        repo_owner = os.getenv('BITBUCKET_REPO_OWNER')
+
+        service_name = os.getenv('ECS_SERVICE_NAME')
+        result = self.run_container(environment={
+            'AWS_SECRET_ACCESS_KEY': os.getenv('AWS_SECRET_ACCESS_KEY'),
+            'COMMAND': 'upload-only',
+            'AWS_ACCESS_KEY_ID': os.getenv('AWS_ACCESS_KEY_ID'),
+            'AWS_DEFAULT_REGION': os.getenv('AWS_DEFAULT_REGION', 'us-east-1'),
+            'ENVIRONMENT_NAME': os.getenv('ENVIRONMENT_NAME'),
+            'APPLICATION_NAME': application_name,
+            'S3_BUCKET': f"{application_name}-master-deployment",
+            'VERSION_LABEL': version_label,
+            'ZIP_FILE': os.path.join(os.getcwd(), f"{self.zip_file_name}.zip"),
+            'WAIT': 'true',
+            'WAIT_INTERVAL': 10,
+            'BITBUCKET_REPO_OWNER': 'atlassian',
+            'BITBUCKET_BUILD_NUMBER': os.getenv('BITBUCKET_BUILD_NUMBER'),
+            'BITBUCKET_REPO_SLUG': os.getenv('BITBUCKET_REPO_SLUG')
+        })
+
+        client = boto3.client('elasticbeanstalk', region_name=os.getenv('AWS_DEFAULT_REGION'))
+
+        application_version = client.describe_application_versions(ApplicationName=application_name)['ApplicationVersions'][0]
+        url = f"https://bitbucket.org/{repo_owner}/{os.getenv('BITBUCKET_REPO_SLUG')}/addon/pipelines/home#!/results/{os.getenv('BITBUCKET_BUILD_NUMBER')}"
+        self.assertIn(url, application_version['Description'])
 
     def test_artifact_jar_can_be_deployed(self):
         "artifact .jar file can be deployed to Elastic Beanstalk"
