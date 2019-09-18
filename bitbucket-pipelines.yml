@@ -16,34 +16,32 @@ release-dev: &release-dev
       - docker push ${IMAGE}:${VERSION}-dev
     services:
       - docker
+    caches:
+      - pip
 
 test: &test
   step:
     name: Test
-    image: python:3.7
+    image: bitbucketpipelines/aws-elasticbeanstalk-deploy-test-step:latest
     script:
       - export DOCKERHUB_IMAGE="bitbucketpipelines/${BITBUCKET_REPO_SLUG}"
       - export DOCKERHUB_TAG=${BITBUCKET_BUILD_NUMBER}
-      - apt-get update && apt-get install zip openjdk-11-jdk -y
       - pip install -r test/requirements.txt
-      - printenv
-      - pytest -v test/test.py  --junitxml=test-reports/report.xml
+      - pytest --verbose test/test.py  --junitxml=test-reports/report.xml
     services:
       - docker
+    caches:
+      - pip
 
 push: &push
-    step:
-        name: Push and Tag
-        image: python:3.7
-        script:
-        - pip install semversioner
-        - ./ci-scripts/git-setup.sh
-        - ./ci-scripts/bump-version.sh
-        - ./ci-scripts/docker-release.sh bitbucketpipelines/$BITBUCKET_REPO_SLUG
-        - ./ci-scripts/git-commit.sh
-        - ./ci-scripts/git-tag.sh
-        services:
-        - docker
+  step:
+    name: Push and Tag
+    script:
+      - pipe: docker://bitbucketpipelines/meta-pipe:0.0.2
+        variables:
+          DOCKERHUB_USERNAME: $DOCKERHUB_USERNAME
+          DOCKERHUB_PASSWORD: $DOCKERHUB_PASSWORD
+          IMAGE: bitbucketpipelines/${BITBUCKET_REPO_SLUG}
 
 pipelines:
     default:
@@ -53,28 +51,4 @@ pipelines:
         master:
         - <<: *test
         - <<: *push
-        qa-*:
-        - <<: *test
-        - <<: *push
-    custom:
-      test-and-report:
-        - step:
-            script:
-              - export DOCKERHUB_IMAGE="bitbucketpipelines/${BITBUCKET_REPO_SLUG}"
-              - export DOCKERHUB_TAG=${BITBUCKET_BUILD_NUMBER}
-              - apt-get update && apt-get install zip bats -y
-              - echo "Building image..."
-              - docker build -t ${DOCKERHUB_IMAGE}:${BITBUCKET_BUILD_NUMBER} -t ${DOCKERHUB_IMAGE}:latest .
-              - echo "Testing image..."
-              - set +e
-              - bats test/test.bats; test_exit_code=$?
-              - set -e
-              - echo test_exit_code = $test_exit_code
-              - pipe: atlassian/report-task-test-result:1.0.0
-                variables:
-                  DATADOG_API_KEY: $DATADOG_API_KEY
-                  TASK_NAME: aws-elasticbeanstalk-deploy
-                  TEST_EXIT_CODE: $test_exit_code
-              - exit $test_exit_code
-            services:
-              - docker
+
