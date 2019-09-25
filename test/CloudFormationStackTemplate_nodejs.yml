@@ -3,12 +3,14 @@ AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   ApplicationName:
     Type: String
+  EnvironmentName:
+    Type: String
 
 Resources:
   sampleApplication:
     Type: AWS::ElasticBeanstalk::Application
     Properties:
-      ApplicationName: bbci-pipes-test-infrastructure
+      ApplicationName: !Ref ApplicationName
       Description: AWS Elastic Beanstalk Sample Application
   sampleApplicationVersion:
     Type: AWS::ElasticBeanstalk::ApplicationVersion
@@ -17,7 +19,7 @@ Resources:
         Ref: sampleApplication
       Description: AWS ElasticBeanstalk Sample Application Version
       SourceBundle:
-        S3Bucket: bbci-pipes-test-infrastructure
+        S3Bucket: bbci-pipes-test-infrastructure-us-east-1
         S3Key: ebs-nodejs-newsample-app.zip
   sampleConfigurationTemplate:
     Type: AWS::ElasticBeanstalk::ConfigurationTemplate
@@ -39,7 +41,7 @@ Resources:
   sampleEnvironment:
     Type: AWS::ElasticBeanstalk::Environment
     Properties:
-      EnvironmentName: master
+      EnvironmentName: !Ref EnvironmentName
       ApplicationName:
         Ref: sampleApplication
       Description: AWS ElasticBeanstalk Sample Environment

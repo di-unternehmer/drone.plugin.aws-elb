@@ -23,7 +23,7 @@ index_html_template = """
 
 
 def isoformat_now():
-    return datetime.datetime.now().isoformat()
+    return datetime.datetime.now().isoformat().replace(':', '').split('.')[0]
 
 
 class ECSDeployTestCase(PipeTestCase):
@@ -31,8 +31,9 @@ class ECSDeployTestCase(PipeTestCase):
     def setUp(self):
         super().setUp()
         self.image_name=f"{os.getenv('DOCKERHUB_IMAGE')}:{os.getenv('DOCKERHUB_TAG')}"
-        self.application_name = f"bbci-pipes-test-infrastructure-{os.getenv('BITBUCKET_BUILD_NUMBER')}"
-        self.environment_name = "master"
+        self.base_name = "bbci-pipes-test-infrastructure"
+        self.application_name = f"{self.base_name}-{os.getenv('BITBUCKET_BUILD_NUMBER')}"
+        self.environment_name = f"master-{os.getenv('BITBUCKET_BUILD_NUMBER')}"
         self.default_region = "us-east-1"
 
         self.randon_number=random.randint(0, 32767)
@@ -55,7 +56,7 @@ class ECSDeployTestCase(PipeTestCase):
             'AWS_DEFAULT_REGION': self.default_region,
             'ENVIRONMENT_NAME': self.environment_name,
             'APPLICATION_NAME': self.application_name,
-            'S3_BUCKET': f"{self.application_name}-master-deployment",
+            'S3_BUCKET': f"{self.base_name}-master-deployment",
             'VERSION_LABEL': f"{self.application_name}-{isoformat_now()}",
             'ZIP_FILE': os.path.join(os.getcwd(), f"{self.zip_file_name}.zip"),
             'WAIT': 'true',
@@ -67,14 +68,14 @@ class ECSDeployTestCase(PipeTestCase):
         client = boto3.client('elasticbeanstalk', region_name=self.default_region)
         application_url = client.describe_environments(ApplicationName=self.application_name)['Environments'][0]['CNAME']
 
-        response = requests.get(application_url)
+        response = requests.get(f"http://{application_url}")
 
         self.assertIn(str(self.randon_number), response.text)
 
     def test_default_description_should_have_url(self):
         "artifact .zip file can be deployed to Elastic Beanstalk"
         version_label = f"{self.application_name}-{isoformat_now()}"
-        repo_owner = os.getenv('BITBUCKET_REPO_OWNER')
+        url = "https://bitbucket.org/atlassian/aws-elasticbeanstalk-deploy/addon/pipelines/home#!/results"
 
         result = self.run_container(environment={
             'AWS_SECRET_ACCESS_KEY': os.getenv('AWS_SECRET_ACCESS_KEY'),
@@ -83,20 +84,21 @@ class ECSDeployTestCase(PipeTestCase):
             'AWS_DEFAULT_REGION': self.default_region,
             'ENVIRONMENT_NAME': self.environment_name,
             'APPLICATION_NAME': self.application_name,
+            'DESCRIPTION': url,
             'S3_BUCKET': f"{self.application_name}-master-deployment",
             'VERSION_LABEL': version_label,
             'ZIP_FILE': os.path.join(os.getcwd(), f"{self.zip_file_name}.zip"),
             'WAIT': 'true',
             'WAIT_INTERVAL': 10,
             'BITBUCKET_REPO_OWNER': 'atlassian',
-            'BITBUCKET_BUILD_NUMBER': os.getenv('BITBUCKET_BUILD_NUMBER'),
-            'BITBUCKET_REPO_SLUG': os.getenv('BITBUCKET_REPO_SLUG')
+            'BITBUCKET_WORKSPACE': 'atlassian',
+            'BITBUCKET_REPO_SLUG': 'aws-elasticbeanstalk-deploy',
+            'BITBUCKET_BUILD_NUMBER': '111'
         })
 
         client = boto3.client('elasticbeanstalk', region_name=self.default_region)
-
         application_version = client.describe_application_versions(ApplicationName=self.application_name)['ApplicationVersions'][0]
-        url = f"https://bitbucket.org/{repo_owner}/{os.getenv('BITBUCKET_REPO_SLUG')}/addon/pipelines/home#!/results/{os.getenv('BITBUCKET_BUILD_NUMBER')}"
+
         self.assertIn(url, application_version['Description'])
 
     def test_artifact_jar_can_be_deployed(self):
@@ -115,7 +117,7 @@ class ECSDeployTestCase(PipeTestCase):
             'AWS_DEFAULT_REGION': self.default_region,
             'ENVIRONMENT_NAME': self.environment_name,
             'APPLICATION_NAME': self.application_name,
-            'S3_BUCKET': f"{self.application_name}-master-deployment",
+            'S3_BUCKET': f"{self.base_name}-master-deployment",
             'VERSION_LABEL': f"{self.application_name}-{isoformat_now()}",
             'ZIP_FILE': os.path.join(os.getcwd(), f"{self.zip_file_name}.jar"),
             'WAIT': 'true',
@@ -127,7 +129,7 @@ class ECSDeployTestCase(PipeTestCase):
         client = boto3.client('elasticbeanstalk', region_name=self.default_region)
         application_url = client.describe_environments(ApplicationName=self.application_name)['Environments'][0]['CNAME']
 
-        response = requests.get(application_url)
+        response = requests.get(f"http://{application_url}")
 
         self.assertIn(str(self.randon_number), response.text)
 
@@ -147,7 +149,7 @@ class ECSDeployTestCase(PipeTestCase):
             'AWS_DEFAULT_REGION': self.default_region,
             'ENVIRONMENT_NAME': self.environment_name,
             'APPLICATION_NAME': self.application_name,
-            'S3_BUCKET': f"{self.application_name}-master-deployment",
+            'S3_BUCKET': f"{self.base_name}-master-deployment",
             'VERSION_LABEL': f"{self.application_name}-{isoformat_now()}",
             'ZIP_FILE': os.path.join(os.getcwd(), f"{self.zip_file_name}.war"),
             'WAIT': 'true',
@@ -159,7 +161,7 @@ class ECSDeployTestCase(PipeTestCase):
         client = boto3.client('elasticbeanstalk', region_name=self.default_region)
         application_url = client.describe_environments(ApplicationName=self.application_name)['Environments'][0]['CNAME']
 
-        response = requests.get(application_url)
+        response = requests.get(f"http://{application_url}")
 
         self.assertIn(str(self.randon_number), response.text)
 
@@ -179,7 +181,7 @@ class ECSDeployTestCase(PipeTestCase):
             'AWS_DEFAULT_REGION': self.default_region,
             'ENVIRONMENT_NAME': self.environment_name,
             'APPLICATION_NAME': self.application_name,
-            'S3_BUCKET': f"{self.application_name}-master-deployment",
+            'S3_BUCKET': f"{self.base_name}-master-deployment",
             'VERSION_LABEL': f"{self.application_name}-{isoformat_now()}",
             'ZIP_FILE': os.path.join(os.getcwd(), f"{self.zip_file_name}"),
             'WAIT': 'true',
@@ -191,7 +193,7 @@ class ECSDeployTestCase(PipeTestCase):
         client = boto3.client('elasticbeanstalk', region_name=self.default_region)
         application_url = client.describe_environments(ApplicationName=self.application_name)['Environments'][0]['CNAME']
 
-        response = requests.get(application_url)
+        response = requests.get(f"http://{application_url}")
 
         self.assertIn(str(self.randon_number), response.text)
 
@@ -211,7 +213,7 @@ class ECSDeployTestCase(PipeTestCase):
             'AWS_DEFAULT_REGION': self.default_region,
             'ENVIRONMENT_NAME': self.environment_name,
             'APPLICATION_NAME': self.application_name,
-            'S3_BUCKET': f"{self.application_name}-master-deployment",
+            'S3_BUCKET': f"{self.base_name}-master-deployment",
             'VERSION_LABEL': f"{self.application_name}-{isoformat_now()}",
             'ZIP_FILE': os.path.join(os.getcwd(), f"{self.zip_file_name}.custom"),
             'WAIT': 'true',
@@ -223,7 +225,7 @@ class ECSDeployTestCase(PipeTestCase):
         client = boto3.client('elasticbeanstalk', region_name=self.default_region)
         application_url = client.describe_environments(ApplicationName=self.application_name)['Environments'][0]['CNAME']
 
-        response = requests.get(application_url)
+        response = requests.get(f"http://{application_url}")
 
         self.assertIn(str(self.randon_number), response.text)
 
@@ -237,7 +239,7 @@ class ECSDeployTestCase(PipeTestCase):
             'AWS_DEFAULT_REGION': self.default_region,
             'ENVIRONMENT_NAME': self.environment_name,
             'APPLICATION_NAME': self.application_name,
-            'S3_BUCKET': f"{self.application_name}-master-deployment",
+            'S3_BUCKET': f"{self.base_name}-master-deployment",
             'VERSION_LABEL': f"{self.application_name}-{isoformat_now()}",
             'ZIP_FILE': os.path.join(os.getcwd(), f"{self.zip_file_name}.zip"),
             'WAIT': 'true',
