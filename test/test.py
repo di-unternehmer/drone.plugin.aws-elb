@@ -8,6 +8,7 @@ import requests
 
 from bitbucket_pipes_toolkit.test import PipeTestCase
 
+
 index_html_template = """
 <html>
   <head>
@@ -19,15 +20,17 @@ index_html_template = """
 </html>
 """
 
+
 def isoformat_now():
     return datetime.datetime.now().isoformat()
+
 
 class ECSDeployTestCase(PipeTestCase):
 
     def setUp(self):
         super().setUp()
         self.image_name=f"{os.getenv('DOCKERHUB_IMAGE')}:{os.getenv('DOCKERHUB_TAG')}"
-        self.application_name="bbci-task-elasticbeanstalk"
+        self.application_name="bbci-pipes-test-infrastructure"
         self.environment_name="master"
 
         self.randon_number=random.randint(0, 32767)
@@ -37,7 +40,6 @@ class ECSDeployTestCase(PipeTestCase):
             index_html.write(index_html_template.format(random_number=self.randon_number))
 
         shutil.make_archive(self.zip_file_name, 'zip', 'test/code/')
-
 
     def tearDown(self):
         os.remove(os.path.join(os.getcwd(), f"{self.zip_file_name}.zip"))
@@ -64,7 +66,6 @@ class ECSDeployTestCase(PipeTestCase):
         response = requests.get('http://bbci-task-master.ap-southeast-2.elasticbeanstalk.com')
 
         self.assertIn(str(self.randon_number), response.text)
-
 
     def test_artifact_jar_can_be_deployed(self):
         "artifact .jar file can be deployed to Elastic Beanstalk"
@@ -95,7 +96,6 @@ class ECSDeployTestCase(PipeTestCase):
         response = requests.get('http://bbci-task-master.ap-southeast-2.elasticbeanstalk.com')
 
         self.assertIn(str(self.randon_number), response.text)
-
 
     def test_artifact_war_can_be_deployed(self):
         "artifact .war file can be deployed to Elastic Beanstalk"

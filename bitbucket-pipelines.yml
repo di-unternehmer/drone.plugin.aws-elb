@@ -1,6 +1,28 @@
 image:
   name: atlassian/default-image:2
 
+
+setup: &setup
+  step:
+    name: Setup tesging resources
+    script:
+      - STACK_NAME="bbci-pipes-test-infrastructure-ebs-nodejs-del-${BITBUCKET_BUILD_NUMBER}"
+      - EBS_APP_NAME="bbci-pipes-test-infrastructure-${BITBUCKET_BUILD_NUMBER}"
+      - pipe: atlassian/aws-cloudformation-deploy:0.5.0
+        variables:
+          AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+          AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+          AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+          STACK_NAME: ${STACK_NAME}
+          TEMPLATE: "./test/CloudFormationStackTemplate_nodejs.yml"
+          CAPABILITIES: ['CAPABILITY_IAM']
+          WAIT: 'true'
+          STACK_PARAMETERS: >
+              [{
+                "ParameterKey": "ApplicationName",
+                "ParameterValue": "${EBS_APP_NAME}"
+              }]
+
 test: &test
   step:
     name: Test
