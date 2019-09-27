@@ -1,6 +1,34 @@
 image:
   name: atlassian/default-image:2
 
+
+setup: &setup
+  step:
+    name: Setup testing resources
+    script:
+      - STACK_NAME="bbci-pipes-test-infrastructure-ebs-nodejs-del-${BITBUCKET_BUILD_NUMBER}"
+      - EBS_APP_NAME="bbci-pipes-test-infrastructure-${BITBUCKET_BUILD_NUMBER}"
+      - EBS_ENV_NAME="master-${BITBUCKET_BUILD_NUMBER}"
+      - pipe: atlassian/aws-cloudformation-deploy:0.5.0
+        variables:
+          AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+          AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+          AWS_DEFAULT_REGION: "us-east-1"
+          STACK_NAME: ${STACK_NAME}
+          TEMPLATE: "./test/CloudFormationStackTemplate_nodejs.yml"
+          CAPABILITIES: ['CAPABILITY_IAM']
+          WAIT: 'true'
+          STACK_PARAMETERS: >
+              [{
+                "ParameterKey": "ApplicationName",
+                "ParameterValue": "${EBS_APP_NAME}"
+              },
+              {
+                "ParameterKey": "EnvironmentName",
+                "ParameterValue": "${EBS_ENV_NAME}"
+              }]
+
+
 release-dev: &release-dev
   step:
     name: Release development version
@@ -19,19 +47,27 @@ release-dev: &release-dev
     caches:
       - pip
 
+
 test: &test
   step:
     name: Test
-    image: bitbucketpipelines/aws-elasticbeanstalk-deploy-test-step:latest
+    image: python:3.7
     script:
       - export DOCKERHUB_IMAGE="bitbucketpipelines/${BITBUCKET_REPO_SLUG}"
       - export DOCKERHUB_TAG=${BITBUCKET_BUILD_NUMBER}
+      - apt-get update && apt-get install zip openjdk-11-jdk -y
       - pip install -r test/requirements.txt
       - pytest --verbose test/test.py  --junitxml=test-reports/report.xml
+    after-script:
+      - STACK_NAME="bbci-pipes-test-infrastructure-ebs-nodejs-del-${BITBUCKET_BUILD_NUMBER}"
+      - AWS_DEFAULT_REGION="us-east-1"
+      - pip install awscli
+      - aws cloudformation delete-stack --stack-name ${STACK_NAME}
     services:
       - docker
     caches:
       - pip
+
 
 push: &push
   step:
@@ -43,12 +79,15 @@ push: &push
           DOCKERHUB_PASSWORD: $DOCKERHUB_PASSWORD
           IMAGE: bitbucketpipelines/${BITBUCKET_REPO_SLUG}
 
+
 pipelines:
     default:
+    - <<: *setup
     - <<: *test
     - <<: *release-dev
     branches:
         master:
+        - <<: *setup
         - <<: *test
         - <<: *push
 
