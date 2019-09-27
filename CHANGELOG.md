@@ -1,6 +1,10 @@
 # Changelog
 Note: version releases in the 0.x.y range may introduce breaking changes.
 
+## 0.5.2
+
+- patch: Internal maintenance: Automate test infrastructure.
+
 ## 0.5.1
 
 - patch: Internal release.
