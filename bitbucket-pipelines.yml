@@ -4,7 +4,7 @@ image:
 
 setup: &setup
   step:
-    name: Setup tesging resources
+    name: Setup testing resources
     script:
       - STACK_NAME="bbci-pipes-test-infrastructure-ebs-nodejs-del-${BITBUCKET_BUILD_NUMBER}"
       - EBS_APP_NAME="bbci-pipes-test-infrastructure-${BITBUCKET_BUILD_NUMBER}"
