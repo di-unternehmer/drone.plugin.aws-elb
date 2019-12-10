@@ -49,24 +49,30 @@ release-dev: &release-dev
 
 
 test: &test
-  step:
-    name: Test
-    image: python:3.7
-    script:
-      - export DOCKERHUB_IMAGE="bitbucketpipelines/${BITBUCKET_REPO_SLUG}"
-      - export DOCKERHUB_TAG=${BITBUCKET_BUILD_NUMBER}
-      - apt-get update && apt-get install zip openjdk-11-jdk -y
-      - pip install -r test/requirements.txt
-      - pytest --verbose test/test.py  --junitxml=test-reports/report.xml
-    after-script:
-      - STACK_NAME="bbci-pipes-test-infrastructure-ebs-nodejs-del-${BITBUCKET_BUILD_NUMBER}"
-      - AWS_DEFAULT_REGION="us-east-1"
-      - pip install awscli
-      - aws cloudformation delete-stack --stack-name ${STACK_NAME}
-    services:
-      - docker
-    caches:
-      - pip
+  parallel:
+    - step:
+        name: Test
+        image: python:3.7
+        script:
+          - export DOCKERHUB_IMAGE="bitbucketpipelines/${BITBUCKET_REPO_SLUG}"
+          - export DOCKERHUB_TAG=${BITBUCKET_BUILD_NUMBER}
+          - apt-get update && apt-get install zip openjdk-11-jdk -y
+          - pip install -r test/requirements.txt
+          - pytest --verbose test/test.py  --junitxml=test-reports/report.xml
+        after-script:
+          - STACK_NAME="bbci-pipes-test-infrastructure-ebs-nodejs-del-${BITBUCKET_BUILD_NUMBER}"
+          - AWS_DEFAULT_REGION="us-east-1"
+          - pip install awscli
+          - aws cloudformation delete-stack --stack-name ${STACK_NAME}
+        services:
+          - docker
+        caches:
+          - pip
+    - step:
+        name: Lint the Dockerfile
+        image: hadolint/hadolint:latest-debian
+        script:
+          - hadolint Dockerfile
 
 
 push: &push
