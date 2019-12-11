@@ -1,0 +1,6 @@
+[
+  {
+    "description": "Update Readme with example deploy multicontainer Docker environment as an AWS Elastic Beanstalk application.",
+    "type": "patch"
+  }
+]

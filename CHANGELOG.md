@@ -1,6 +1,10 @@
 # Changelog
 Note: version releases in the 0.x.y range may introduce breaking changes.
 
+## 0.5.4
+
+- patch: Update Readme with example deploy multicontainer Docker environment as an AWS Elastic Beanstalk application.
+
 ## 0.5.3
 
 - patch: Internal maintenance: Add hadolint linter for Dockerfile

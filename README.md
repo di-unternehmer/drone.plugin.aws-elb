@@ -7,7 +7,7 @@ Deploy your code using [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbea
 Add the following snippet to the script section of your `bitbucket-pipelines.yml` file:
     
 ```yaml
-- pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.3
+- pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.4
   variables:
     AWS_ACCESS_KEY_ID: '<string>'
     AWS_SECRET_ACCESS_KEY: '<string>'
@@ -104,7 +104,7 @@ Upload the artifact `application.zip` and deploy your environment.
     
 ```yaml
 script:
-  - pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.3
+  - pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.4
     variables:
       AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
@@ -119,7 +119,7 @@ script:
 Upload the artifact `application.zip` and create a version `deploy-$BITBUCKET_BUILD_NUMBER-multiple` in Elastic Beanstalk.
 
 ```yaml
-- pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.3
+- pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.4
   variables:
     AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
@@ -134,7 +134,7 @@ Upload the artifact `application.zip` and create a version `deploy-$BITBUCKET_BU
 Deploy your version `deploy-$BITBUCKET_BUILD_NUMBER-multiple` into the environment `production` and wait until the deployment is completed to see the status.
 
 ```yaml
-- pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.3
+- pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.4
   variables:
     AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
@@ -161,7 +161,7 @@ You can find the complete source code for the sample multicontainer app by follo
     caches:
       - pip
     script:
-    - pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.2
+    - pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.4
       variables:
         AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
         AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
