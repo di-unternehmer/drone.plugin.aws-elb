@@ -41,7 +41,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 | DESCRIPTION                     |  Description for the new application revision. Default: a URL pointing to the pipeline result page. |
 | WAIT                            |  Wait for deployment to complete. Default: `false`. |
 | WAIT_INTERVAL                   |  Time to wait between polling for deployment to complete (in seconds). Default: `10`. |
-| COMMAND                         |  Command to be executed during the deployment. Valid options are `all`, `update-only`, `deploy-only`. Default: `all`. |
+| COMMAND                         |  Command to be executed during the deployment. Valid options are `all`, `upload-only`, `deploy-only`. Default: `all`. |
 | DEBUG                           |  Turn on extra debug information. Default: `false`. |
 _(*) = required variable._
 
