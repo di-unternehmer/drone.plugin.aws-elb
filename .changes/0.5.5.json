@@ -1,0 +1,6 @@
+[
+  {
+    "description": "Fix typo in COMMAND options in README.",
+    "type": "patch"
+  }
+]
