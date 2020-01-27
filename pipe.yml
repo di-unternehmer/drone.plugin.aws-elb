@@ -1,5 +1,5 @@
 name: AWS Code Deploy
-image: bitbucketpipelines/aws-elasticbeanstalk-deploy:0.5.5
+image: bitbucketpipelines/aws-elasticbeanstalk-deploy:0.6.0
 description: Deploy your code to AWS Elastic Beanstalk
 variables:
   - name: AWS_ACCESS_KEY_ID
