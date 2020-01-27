@@ -1,6 +1,13 @@
 name: AWS Code Deploy
 image: bitbucketpipelines/aws-elasticbeanstalk-deploy:0.5.5
 description: Deploy your code to AWS Elastic Beanstalk
+variables:
+  - name: AWS_ACCESS_KEY_ID
+    default: "$AWS_ACCESS_KEY_ID"
+  - name: AWS_SECRET_ACCESS_KEY
+    default: "$AWS_SECRET_ACCESS_KEY"
+  - name: AWS_DEFAULT_REGION
+    default: "$AWS_DEFAULT_REGION"
 repository: https://bitbucket.org/atlassian/aws-elasticbeanstalk-deploy
 maintainer: Bitbucket Pipelines team
 icon: https://bitbucket.org/atlassian/aws-elasticbeanstalk-deploy/raw/master/logo_aws.svg
