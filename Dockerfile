@@ -1,8 +1,11 @@
 FROM atlassian/pipelines-awscli:1.16.185
 
-RUN wget -P / https://bitbucket.org/bitbucketpipelines/bitbucket-pipes-toolkit-bash/raw/0.4.0/common.sh
-
-COPY pipe /
+COPY pipe /bin/
 COPY LICENSE.txt README.md pipe.yml /
 
-ENTRYPOINT ["/pipe.sh"]
+RUN chmod +x /bin/common.sh
+RUN chmod +x /bin/pipe.sh
+
+WORKDIR /drone/src
+
+ENTRYPOINT ["/bin/pipe.sh"]

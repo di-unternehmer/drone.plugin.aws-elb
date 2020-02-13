@@ -12,7 +12,7 @@
 # Optional globals:
 #
 #   S3_BUCKET (default: ${APPLICATION_NAME}-elasticbeanstalk-deployment)
-#   VERSION_LABEL (default: ${APPLICATION_NAME}-${BITBUCKET_BUILD_NUMBER}-${BITBUCKET_COMMIT:0:8})
+#   VERSION_LABEL (default: ${APPLICATION_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_COMMIT:0:8})
 #   DESCRIPTION (default: "")
 #   WAIT (default: false)
 #   WAIT_INTERVAL (default: 10)
@@ -36,8 +36,8 @@ if [[ "${DEBUG}" == "true" ]]; then
     AWS_DEBUG_ARGS="--debug"
 fi
 
-if ! [[ "$COMMAND" =~ ^(deploy-only|upload-only|all)$ ]]; then 
-    fail "Invalid COMMAND value. Possible values are deploy-only, upload-only, all." ; 
+if ! [[ "$COMMAND" =~ ^(deploy-only|upload-only|all)$ ]]; then
+    fail "Invalid COMMAND value. Possible values are deploy-only, upload-only, all." ;
 fi
 
 if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
@@ -74,10 +74,10 @@ fi
 
 # default variables
 S3_BUCKET=${S3_BUCKET:=${APPLICATION_NAME}-elasticbeanstalk-deployment}
-VERSION_LABEL=${VERSION_LABEL:=${APPLICATION_NAME}-${BITBUCKET_BUILD_NUMBER}-${BITBUCKET_COMMIT:0:8}}
+VERSION_LABEL=${VERSION_LABEL:=${APPLICATION_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_COMMIT:0:8}}
 WAIT=${WAIT:="false"}
 WAIT_INTERVAL=${WAIT_INTERVAL:=10}
-DESCRIPTION=${DESCRIPTION:="Application version created from https://bitbucket.org/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/addon/pipelines/home#!/results/${BITBUCKET_BUILD_NUMBER}"}
+DESCRIPTION=${DESCRIPTION:="Application version created from https://bitbucket.org/${DRONE_REPO}/addon/pipelines/home#!/results/${DRONE_BUILD_NUMBER}"}
 
 # local variables
 VERSION_LABEL=${VERSION_LABEL:0:50}

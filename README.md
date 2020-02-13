@@ -1,17 +1,24 @@
-# Bitbucket Pipelines Pipe: AWS Elastic Beanstalk
+# Drone.io Step for AWS Elastic Beanstalk 
+This is based on Atlassians Bitbucket Pipelines Pipe for AWS Elastic Beanstalk.
+For more details see: https://bitbucket.org/atlassian/aws-elasticbeanstalk-deploy/src/master/
 
 Deploy your code using [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/). 
 
 ## YAML Definition
 
-Add the following snippet to the script section of your `bitbucket-pipelines.yml` file:
+Add the following snippet to the step section of your `.drone.yml` file:
     
 ```yaml
-- pipe: atlassian/aws-elasticbeanstalk-deploy:0.6.0
-  variables:
-    AWS_ACCESS_KEY_ID: '<string>'
-    AWS_SECRET_ACCESS_KEY: '<string>'
-    AWS_DEFAULT_REGION: '<string>'
+steps:
+- name: 'Deploy to Elastic Beanstalk'
+  image: kapale/drone-deploy-to-aws-eb
+  pull: always
+  settings:
+    AWS_ACCESS_KEY_ID:
+      from_secret: aws_access_key_id
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: 
+    AWS_DEFAULT_REGION: 'eu-central-1'
     APPLICATION_NAME: '<string>'
     ENVIRONMENT_NAME: '<string>'
     ZIP_FILE: '<string>'
@@ -22,6 +29,9 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
     # WAIT_INTERVAL: '<integer>' # Optional.
     # COMMAND: '<string>' # Optional.
     # DEBUG: '<boolean>' # Optional.
+  when:
+    event: tag
+    branch: master
 ```
 
 ## Variables
@@ -37,7 +47,7 @@ Add the following snippet to the script section of your `bitbucket-pipelines.yml
 | ENVIRONMENT_NAME (*)            |  Environment name. |
 | ZIP_FILE (*)                    |  The application source bundle to deploy (zip, jar, war). |
 | S3_BUCKET                       |  Bucket name used by Elastic Beanstalk to store artifacts. Default: `${APPLICATION_NAME}-elasticbeanstalk-deployment`. |
-| VERSION_LABEL                   |  Version label for the new application revision. Default: `${APPLICATION_NAME}-${BITBUCKET_BUILD_NUMBER}-${BITBUCKET_COMMIT:0:8}`. |
+| VERSION_LABEL                   |  Version label for the new application revision. Default: `${APPLICATION_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_COMMIT:0:8}`. |
 | DESCRIPTION                     |  Description for the new application revision. Default: a URL pointing to the pipeline result page. |
 | WAIT                            |  Wait for deployment to complete. Default: `false`. |
 | WAIT_INTERVAL                   |  Time to wait between polling for deployment to complete (in seconds). Default: `10`. |
@@ -59,7 +69,7 @@ If `COMMAND` is set to `upload-only`
 | COMMAND (*)                     |  Command to be used. Use `upload-only` here. |
 | ZIP_FILE (*)                    |  The application source bundle to deploy (zip, jar, war). |
 | S3_BUCKET                       |  Bucket name used by Elastic Beanstalk to store artifacts. Default: `${APPLICATION_NAME}-elasticbeanstalk-deployment}`. |
-| VERSION_LABEL                   |  Version label for the new application revision. Default: `${ENVIRONMENT_NAME}_${BITBUCKET_COMMIT:0:8}_YYYY-mm-dd_HHMMSS)`. |
+| VERSION_LABEL                   |  Version label for the new application revision. Default: `${ENVIRONMENT_NAME}_${DRONE_COMMIT:0:8}_YYYY-mm-dd_HHMMSS)`. |
 | DESCRIPTION                     |  Description for the new application revision. Default: "". |
 | DEBUG                           |  Turn on extra debug information. Default: `false`. |
 
@@ -73,7 +83,7 @@ If `COMMAND` is set to `deploy-only`
 | APPLICATION_NAME (*)            |  The name of the Elastic Beanstalk application. |
 | COMMAND (*)                     |  Command to be used. Use `deploy-only` here. |
 | ENVIRONMENT_NAME (*)            |  Environment name. |
-| VERSION_LABEL                   |  Version label for the new application revision. Default: `${ENVIRONMENT_NAME}_${BITBUCKET_COMMIT:0:8}_YYYY-mm-dd_HHMMSS)`. |
+| VERSION_LABEL                   |  Version label for the new application revision. Default: `${ENVIRONMENT_NAME}_${DRONE_COMMIT:0:8}_YYYY-mm-dd_HHMMSS)`. |
 | WAIT                            |  Wait for deployment to complete. Default: `false`. |
 | WAIT_INTERVAL                   |  Time to wait between polling for deployment to complete (in seconds). Default: `10`. |
 | DEBUG                           |  Turn on extra debug information. Default: `false`. |
@@ -116,7 +126,7 @@ script:
 
 ### Advanced example:
     
-Upload the artifact `application.zip` and create a version `deploy-$BITBUCKET_BUILD_NUMBER-multiple` in Elastic Beanstalk.
+Upload the artifact `application.zip` and create a version `deploy-$DRONE_BUILD_NUMBER-multiple` in Elastic Beanstalk.
 
 ```yaml
 - pipe: atlassian/aws-elasticbeanstalk-deploy:0.6.0
@@ -128,10 +138,10 @@ Upload the artifact `application.zip` and create a version `deploy-$BITBUCKET_BU
     COMMAND: 'upload-only'
     ZIP_FILE: 'application.zip'
     S3_BUCKET: 'application-test-bucket'
-    VERSION_LABEL: 'deploy-$BITBUCKET_BUILD_NUMBER-multiple'
+    VERSION_LABEL: 'deploy-$DRONE_BUILD_NUMBER-multiple'
 ```
 
-Deploy your version `deploy-$BITBUCKET_BUILD_NUMBER-multiple` into the environment `production` and wait until the deployment is completed to see the status.
+Deploy your version `deploy-$DRONE_BUILD_NUMBER-multiple` into the environment `production` and wait until the deployment is completed to see the status.
 
 ```yaml
 - pipe: atlassian/aws-elasticbeanstalk-deploy:0.6.0
@@ -141,7 +151,7 @@ Deploy your version `deploy-$BITBUCKET_BUILD_NUMBER-multiple` into the environme
     AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
     APPLICATION_NAME: 'application-test'
     COMMAND: 'deploy-only'
-    VERSION_LABEL: 'deploy-$BITBUCKET_BUILD_NUMBER-multiple'
+    VERSION_LABEL: 'deploy-$DRONE_BUILD_NUMBER-multiple'
     ENVIRONMENT_NAME: 'production'
     WAIT: 'true'
 ```
