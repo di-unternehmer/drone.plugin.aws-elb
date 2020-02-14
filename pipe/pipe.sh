@@ -11,8 +11,8 @@
 #
 # Optional globals:
 #
-#   S3_BUCKET (default: ${PLUGIN_APPLICATION_NAME}-elasticbeanstalk-deployment)
-#   VERSION_LABEL (default: ${PLUGIN_APPLICATION_NAME}-${PLUGIN_DRONE_BUILD_NUMBER}-${PLUGIN_DRONE_COMMIT:0:8})
+#   S3_BUCKET (default: ${APPLICATION_NAME}-elasticbeanstalk-deployment)
+#   VERSION_LABEL (default: ${APPLICATION_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_COMMIT:0:8})
 #   DESCRIPTION (default: "")
 #   WAIT (default: false)
 #   WAIT_INTERVAL (default: 10)
@@ -21,19 +21,17 @@
 source "$(dirname "$0")/common.sh"
 
 # mandatory variables
-AWS_ACCESS_KEY_ID=${PLUGIN_AWS_ACCESS_KEY_ID:?'You need to configure the AWS_ACCESS_KEY_ID variable!'}
-AWS_SECRET_ACCESS_KEY=${PLUGIN_AWS_SECRET_ACCESS_KEY:?'You need to configure the AWS_SECRET_ACCESS_KEY variable!'}
-AWS_DEFAULT_REGION=${PLUGIN_AWS_DEFAULT_REGION:?'You need to configure the AWS_DEFAULT_REGION variable!'}
-APPLICATION_NAME=${PLUGIN_APPLICATION_NAME:?'You need to configure the APPLICATION_NAME variable!'}
+AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:?'You need to configure the AWS_ACCESS_KEY_ID variable!'}
+AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:?'You need to configure the AWS_SECRET_ACCESS_KEY variable!'}
+AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:?'You need to configure the AWS_DEFAULT_REGION variable!'}
+APPLICATION_NAME=${APPLICATION_NAME:?'You need to configure the APPLICATION_NAME variable!'}
 
 VALID_FILE_EXTENSIONS='zip jar war'
 
-COMMAND=${PLUGIN_COMMAND:="all"}
-
-info "DEMO variable has value for Settings: ${PLUGIN_DEMO} for environment: ${DEMO}"
+COMMAND=${COMMAND:="all"}
 
 AWS_DEBUG_ARGS=""
-if [[ "${PLUGIN_DEBUG}" == "true" ]]; then
+if [[ "${DEBUG}" == "true" ]]; then
     info "Enabling debug mode."
     AWS_DEBUG_ARGS="--debug"
 fi
@@ -43,7 +41,7 @@ if ! [[ "$COMMAND" =~ ^(deploy-only|upload-only|all)$ ]]; then
 fi
 
 if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
-    ZIP_FILE=${PLUGIN_ZIP_FILE:?'You need to configure the ZIP_FILE variable!'}
+    ZIP_FILE=${ZIP_FILE:?'You need to configure the ZIP_FILE variable!'}
     ZIP_FILE_NAME=$(basename -- "${ZIP_FILE}")
     # return as dot_extension "zip" for "filename.zip" or "filename" for "filename"
     if [[ "${ZIP_FILE_NAME}" == "${ZIP_FILE_NAME##*.}" ]];then
@@ -71,15 +69,15 @@ if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
 fi
 
 if [[ "$COMMAND" == "deploy-only" || "$COMMAND" == "all" ]]; then
-    ENVIRONMENT_NAME=${PLUGIN_ENVIRONMENT_NAME:?'You need to configure the ENVIRONMENT_NAME variable!'}
+    ENVIRONMENT_NAME=${ENVIRONMENT_NAME:?'You need to configure the ENVIRONMENT_NAME variable!'}
 fi
 
 # default variables
-S3_BUCKET=${PLUGIN_S3_BUCKET:=${APPLICATION_NAME}-elasticbeanstalk-deployment}
-VERSION_LABEL=${PLUGIN_VERSION_LABEL:=${ENVIRONMENT_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_COMMIT:0:8}}
-WAIT=${PLUGIN_WAIT:="false"}
-WAIT_INTERVAL=${PLUGIN_WAIT_INTERVAL:=10}
-DESCRIPTION=${PLUGIN_DESCRIPTION:="Application version created from https://bitbucket.org/${DRONE_REPO}/addon/pipelines/home#!/results/${DRONE_BUILD_NUMBER}"}
+S3_BUCKET=${S3_BUCKET:=${APPLICATION_NAME}-elasticbeanstalk-deployment}
+VERSION_LABEL=${VERSION_LABEL:=${ENVIRONMENT_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_COMMIT:0:8}}
+WAIT=${WAIT:="false"}
+WAIT_INTERVAL=${WAIT_INTERVAL:=10}
+DESCRIPTION=${DESCRIPTION:="Application version created from https://bitbucket.org/${DRONE_REPO}/addon/pipelines/home#!/results/${DRONE_BUILD_NUMBER}"}
 
 # local variables
 VERSION_LABEL=${VERSION_LABEL:0:50}
