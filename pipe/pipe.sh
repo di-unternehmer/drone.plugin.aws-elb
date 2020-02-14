@@ -74,7 +74,7 @@ fi
 
 # default variables
 S3_BUCKET=${PLUGIN_S3_BUCKET:=${APPLICATION_NAME}-elasticbeanstalk-deployment}
-VERSION_LABEL=${PLUGIN_VERSION_LABEL:=${APPLICATION_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_COMMIT:0:8}}
+VERSION_LABEL=${PLUGIN_VERSION_LABEL:=${ENVIRONMENT_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_COMMIT:0:8}}
 WAIT=${PLUGIN_WAIT:="false"}
 WAIT_INTERVAL=${PLUGIN_WAIT_INTERVAL:=10}
 DESCRIPTION=${PLUGIN_DESCRIPTION:="Application version created from https://bitbucket.org/${DRONE_REPO}/addon/pipelines/home#!/results/${DRONE_BUILD_NUMBER}"}
@@ -86,7 +86,7 @@ debug "COMMAND = $COMMAND"
 
 if [[ "$COMMAND" == "upload-only" || "$COMMAND" == "all" ]]; then
 
-    s3_key="${APPLICATION_NAME}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}"
+    s3_key="${APPLICATION_NAME}/${ENVIRONMENT_NAME}/${VERSION_LABEL}${ZIP_FILE_EXTENSION}"
 
     info "Uploading to s3 bucket: ${S3_BUCKET}..."
     aws s3 cp "${ZIP_FILE}" "s3://${S3_BUCKET}/${s3_key}" ${AWS_DEBUG_ARGS}
