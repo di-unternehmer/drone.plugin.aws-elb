@@ -30,6 +30,8 @@ VALID_FILE_EXTENSIONS='zip jar war'
 
 COMMAND=${PLUGIN_COMMAND:="all"}
 
+info "DEMO variable has value for Settings: ${PLUGIN_DEMO} for environment: ${DEMO}"
+
 AWS_DEBUG_ARGS=""
 if [[ "${PLUGIN_DEBUG}" == "true" ]]; then
     info "Enabling debug mode."
